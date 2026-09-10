@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRB-Kenya Demo</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f3f7fb;
+            color: #172033;
+            min-height: 100vh;
+        }
+
+        /* ---------- WELCOME SCREEN ---------- */
+
+        #welcome {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, #063970, #087f5b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            animation: fadeOut 1s ease 4s forwards;
+        }
+
+        .welcome-content {
+            text-align: center;
+            animation: scaleIn 1.2s ease;
+        }
+
+        .credit-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            border: 5px solid rgba(255,255,255,.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .welcome-content h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-content p {
+            font-size: 17px;
+            opacity: .9;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255,255,255,.3);
+            }
+
+            50% {
+                transform: scale(1.08);
+                box-shadow: 0 0 0 20px rgba(255,255,255,0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(.7);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+        }
+
+        /* ---------- MAIN ---------- */
+
+        header {
+            background: #063970;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h2 {
+            font-size: 23px;
+        }
+
+        .demo-label {
+            background: #ffc107;
+            color: #222;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 1050px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 34px;
+            color: #063970;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #64748b;
+        }
+
+        /* ---------- SERVICE CARDS ---------- */
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 30px 22px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.07);
+            border: 1px solid #e5eaf0;
+            text-align: center;
+            transition: .3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0,0,0,.12);
+        }
+
+        .service-icon {
+            font-size: 42px;
+            margin-bottom: 18px;
+        }
+
+        .service-card h3 {
+            color: #063970;
+            margin-bottom: 12px;
+        }
+
+        .service-card p {
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 13px 22px;
+            background: #087f5b;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            transition: .2s;
+        }
+
+        button:hover {
+            background: #066b4d;
+            transform: translateY(-1px);
+        }
+
+        /* ---------- FORM ---------- */
+
+        .form-container {
+            display: none;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.08);
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .form-container h2 {
+            color: #063970;
+            margin-bottom: 8px;
+        }
+
+        .form-description {
+            color: #64748b;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .demo-warning {
+            background: #fff8db;
+            border: 1px solid #f0d66a;
+            color: #735900;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccd5df;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #087f5b;
+            box-shadow: 0 0 0 3px rgba(8,127,91,.1);
+        }
+
+        .back-button {
+            background: #64748b;
+            margin-right: 8px;
+        }
+
+        .back-button:hover {
+            background: #475569;
+        }
+
+        /* ---------- OTP ---------- */
+
+        #otpSection {
+            display: none;
+            margin-top: 25px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 25px;
+        }
+
+        #otpSection.active {
+            display: block;
+        }
+
+        /* ---------- MODAL ---------- */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 200;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            animation: modalIn .3s ease;
+        }
+
+        .modal-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .modal h2 {
+            color: #063970;
+            margin-bottom: 15px;
+        }
+
+        .modal p {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success {
+            display: none;
+            text-align: center;
+            padding: 25px;
+            color: #087f5b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        @media(max-width: 800px) {
+            .services {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-content h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- WELCOME ANIMATION -->
+<section id="welcome">
+    <div class="welcome-content">
+        <div class="credit-icon">✓</div>
+        <h1>CRB-Kenya</h1>
+        <p>Credit information services demonstration</p>
+    </div>
+</section>
+
+<header>
+    <h2>CRB-Kenya</h2>
+    <span class="demo-label">DEMO / PROTOTYPE</span>
+</header>
+
+<main>
+
+    <!-- HOME -->
+    <section id="home">
+
+        <div class="hero">
+            <h1>Welcome to CRB-Kenya</h1>
+            <p>Select a service below to continue.</p>
+        </div>
+
+        <div class="services">
+
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>Credit Report &amp; Score</h3>
+                <p>
+                    Demonstrate the process of requesting
+                    a credit report and score.
+                </p>
+                <button onclick="showReportForm()">
+                    Continue
+                </button>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">💳</div>
+                <h3>Repay Defaulted Loan(s)</h3>
+                <p>
+                    Demonstration of a loan repayment
+                    service workflow.
+                </p>
+                <button onclick="demoMessage()">
+                    Continue
+                </button>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">📜</div>
+                <h3>Clearance Certificate</h3>
+                <p>
+                    Demonstration of a clearance certificate
+                    request process.
+                </p>
+                <button onclick="demoMessage()">
+                    Continue
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CREDIT REPORT FORM -->
+    <section id="reportForm" class="form-container">
+
+        <h2>Credit Report &amp; Score</h2>
+
+        <p class="form-description">
+            Enter fictional information below to test this prototype.
+        </p>
+
+        <div class="demo-warning">
+            <strong>Demo mode:</strong>
+            Do not enter a real national ID, phone number,
+            email address, password, payment information,
+            or OTP.
+        </div>
+
+        <form id="creditForm">
+
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input
+                    id="fullName"
+                    type="text"
+                    placeholder="e.g. Jane Demo"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="demoId">Demo ID Number</label>
+                <input
+                    id="demoId"
+                    type="text"
+                    placeholder="e.g. DEMO-123456"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="demoPhone">Demo Mobile Number</label>
+                <input
+                    id="demoPhone"
+                    type="text"
+                    placeholder="e.g. 0700000000"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="demoEmail">Demo Email</label>
+                <input
+                    id="demoEmail"
+                    type="email"
+                    placeholder="demo@example.test"
+                    required
+                >
+            </div>
+
+            <button type="button" class="back-button"
+                    onclick="goHome()">
+                Back
+            </button>
+
+            <button type="submit">
+                Submit Demo Request
+            </button>
+
+        </form>
+
+        <!-- OTP DEMO -->
+        <div id="otpSection">
+
+            <h3>Demo Verification</h3>
+
+            <p class="form-description">
+                In this prototype, no OTP is transmitted anywhere.
+                Use the demonstration code:
+                <strong>123456</strong>
+            </p>
+
+            <div class="form-group">
+                <label for="demoOtp">Demo OTP</label>
+
+                <input
+                    id="demoOtp"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="6"
+                    placeholder="Enter 123456"
+                >
+            </div>
+
+            <button onclick="verifyDemoOtp()">
+                Verify Demo OTP
+            </button>
+
+            <div id="successMessage" class="success">
+                <h3>✓ Verification Successful</h3>
+                <p>
+                    This is a demonstration only. No real credit
+                    report was accessed.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    CRB-Kenya Demo &copy; 2026 — Prototype only.
+</footer>
+
+
+<!-- PAYMENT INFORMATION MODAL -->
+<div id="paymentModal" class="modal-overlay">
+
+    <div class="modal">
+
+        <div class="modal-icon">ℹ️</div>
+
+        <h2>Demo Payment Step</h2>
+
+        <p>
+            In an authorized production implementation, payment
+            instructions would be displayed here.
+            <br><br>
+            <strong>
+                This prototype does not process payments or
+                request real payment credentials.
+            </strong>
+        </p>
+
+        <button onclick="closeModal()">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const home = document.getElementById("home");
+    const reportForm = document.getElementById("reportForm");
+    const creditForm = document.getElementById("creditForm");
+    const paymentModal = document.getElementById("paymentModal");
+    const otpSection = document.getElementById("otpSection");
+
+    function showReportForm() {
+        home.style.display = "none";
+        reportForm.classList.add("active");
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+    function goHome() {
+        reportForm.classList.remove("active");
+        home.style.display = "block";
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+    function demoMessage() {
+        paymentModal.classList.add("active");
+    }
+
+    function closeModal() {
+        paymentModal.classList.remove("active");
+
+        otpSection.classList.add("active");
+
+        otpSection.scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+
+    creditForm.addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        /*
+         * SECURITY:
+         * This demonstration deliberately does NOT:
+         *
+         * - send the submitted data anywhere
+         * - call an SMS API
+         * - send information to a phone number
+         * - store the user's ID
+         * - store the user's phone number
+         * - collect a real OTP
+         */
+
+        paymentModal.classList.add("active");
+    });
+
+    function verifyDemoOtp() {
+
+        const otp = document.getElementById("demoOtp").value;
+        const success = document.getElementById("successMessage");
+
+        if (otp === "123456") {
+
+            success.style.display = "block";
+
+        } else {
+
+            alert("Incorrect demo OTP. Enter 123456.");
+
+        }
+    }
+
+</script>
+
+</body>
+</html>
