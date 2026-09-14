@@ -1,801 +1,801 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRB Kenya</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRB Kenya</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-        body {
-            background: #f3f7fb;
-            color: #172033;
-            min-height: 100vh;
-        }
+        body {
+            background: #f3f7fb;
+            color: #172033;
+            min-height: 100vh;
+        }
 
-        #welcome {
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            background: linear-gradient(135deg, #063970, #087f5b);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            animation: fadeOut 1s ease 4s forwards;
-        }
+        #welcome {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, #063970, #087f5b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            animation: fadeOut 1s ease 4s forwards;
+        }
 
-        .welcome-content {
-            text-align: center;
-            animation: scaleIn 1.2s ease;
-        }
+        .welcome-content {
+            text-align: center;
+            animation: scaleIn 1.2s ease;
+        }
 
-        .credit-logo-container {
-            width: 140px;
-            height: 140px;
-            background: #ffffff;
-            border-radius: 50%;
-            margin: 0 auto 25px;
-            border: 4px solid rgba(255, 255, 255, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            animation: pulse 1.8s infinite ease-in-out;
-        }
+        .credit-logo-container {
+            width: 140px;
+            height: 140px;
+            background: #ffffff;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            border: 4px solid rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: pulse 1.8s infinite ease-in-out;
+        }
 
-        .credit-logo-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
+        .credit-logo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
 
-        .welcome-content h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
-        }
+        .welcome-content h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
 
-        .welcome-content p {
-            font-size: 17px;
-            opacity: .9;
-        }
+        .welcome-content p {
+            font-size: 17px;
+            opacity: .9;
+        }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-            }
-            50% {
-                transform: scale(1.06);
-                box-shadow: 0 0 0 22px rgba(255, 255, 255, 0);
-            }
-        }
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+            }
+            50% {
+                transform: scale(1.06);
+                box-shadow: 0 0 0 22px rgba(255, 255, 255, 0);
+            }
+        }
 
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(.7);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(.7);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
 
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-            }
-        }
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+        }
 
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 90;
-            background: #063970;
-            color: white;
-            padding: 18px 7%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            background: #063970;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-        header h2 {
-            font-size: 23px;
-        }
+        header h2 {
+            font-size: 23px;
+        }
 
-        .demo-label {
-            background: #ffc107;
-            color: #222;
-            padding: 6px 11px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
+        .demo-label {
+            background: #ffc107;
+            color: #222;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
 
-        .info-strip-container {
-            position: sticky;
-            top: 61px;
-            z-index: 89;
-            background: #042952;
-            color: #ffffff;
-            border-bottom: 2px solid #087f5b;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            font-size: 14px;
-            height: 42px;
-        }
+        .info-strip-container {
+            position: sticky;
+            top: 61px;
+            z-index: 89;
+            background: #042952;
+            color: #ffffff;
+            border-bottom: 2px solid #087f5b;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            font-size: 14px;
+            height: 42px;
+        }
 
-        .info-strip-badge {
-            background: #087f5b;
-            color: #ffffff;
-            font-weight: bold;
-            padding: 0 16px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            font-size: 12px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            z-index: 2;
-            box-shadow: 3px 0 10px rgba(0,0,0,0.2);
-        }
+        .info-strip-badge {
+            background: #087f5b;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 0 16px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            z-index: 2;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.2);
+        }
 
-        .info-strip-wrapper {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
+        .info-strip-wrapper {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
 
-        .info-strip-content {
-            display: flex;
-            align-items: center;
-            position: absolute;
-            white-space: nowrap;
-            animation: marquee 25s linear infinite;
-        }
+        .info-strip-content {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+        }
 
-        .info-strip-content:hover {
-            animation-play-state: paused;
-        }
+        .info-strip-content:hover {
+            animation-play-state: paused;
+        }
 
-        .info-item {
-            display: inline-flex;
-            align-items: center;
-            padding: 0 25px;
-            opacity: 0.95;
-        }
+        .info-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 25px;
+            opacity: 0.95;
+        }
 
-        .info-item span.bullet {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background: #ffc107;
-            border-radius: 50%;
-            margin-right: 12px;
-        }
+        .info-item span.bullet {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #ffc107;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
 
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
 
-        main {
-            max-width: 1050px;
-            margin: 45px auto;
-            padding: 0 20px;
-        }
+        main {
+            max-width: 1050px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
 
-        .hero {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
-        .hero h1 {
-            font-size: 34px;
-            color: #063970;
-            margin-bottom: 10px;
-        }
+        .hero h1 {
+            font-size: 34px;
+            color: #063970;
+            margin-bottom: 10px;
+        }
 
-        .hero p { color: #64748b; }
+        .hero p { color: #64748b; }
 
-        .services {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
-        }
+        .services {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
 
-        .service-card {
-            background: white;
-            padding: 30px 22px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,.07);
-            border: 1px solid #e5eaf0;
-            text-align: center;
-            transition: .3s;
-        }
+        .service-card {
+            background: white;
+            padding: 30px 22px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.07);
+            border: 1px solid #e5eaf0;
+            text-align: center;
+            transition: .3s;
+        }
 
-        .service-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 30px rgba(0,0,0,.12);
-        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0,0,0,.12);
+        }
 
-        .service-icon {
-            font-size: 42px;
-            margin-bottom: 18px;
-        }
+        .service-icon {
+            font-size: 42px;
+            margin-bottom: 18px;
+        }
 
-        .service-card h3 {
-            color: #063970;
-            margin-bottom: 12px;
-        }
+        .service-card h3 {
+            color: #063970;
+            margin-bottom: 12px;
+        }
 
-        .service-card p {
-            color: #64748b;
-            line-height: 1.5;
-            margin-bottom: 22px;
-        }
+        .service-card p {
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
 
-        button {
-            border: none;
-            cursor: pointer;
-            border-radius: 8px;
-            padding: 13px 22px;
-            background: #087f5b;
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
-            transition: .2s;
-        }
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 13px 22px;
+            background: #087f5b;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            transition: .2s;
+        }
 
-        button:hover {
-            background: #066b4d;
-            transform: translateY(-1px);
-        }
+        button:hover {
+            background: #066b4d;
+            transform: translateY(-1px);
+        }
 
-        .form-container {
-            display: none;
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 35px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,.08);
-        }
+        .form-container {
+            display: none;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.08);
+        }
 
-        .form-container.active { display: block; }
+        .form-container.active { display: block; }
 
-        .form-container h2 {
-            color: #063970;
-            margin-bottom: 8px;
-        }
+        .form-container h2 {
+            color: #063970;
+            margin-bottom: 8px;
+        }
 
-        .form-description {
-            color: #64748b;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
+        .form-description {
+            color: #64748b;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
 
-        .demo-warning {
-            background: #fff8db;
-            border: 1px solid #f0d66a;
-            color: #735900;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 22px;
-            font-size: 14px;
-        }
+        .demo-warning {
+            background: #fff8db;
+            border: 1px solid #f0d66a;
+            color: #735900;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
 
-        .form-group { margin-bottom: 18px; }
+        .form-group { margin-bottom: 18px; }
 
-        label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: bold;
-            color: #334155;
-        }
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #334155;
+        }
 
-        input, select {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid #ccd5df;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-            background: white;
-        }
+        input, select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccd5df;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
 
-        input:focus, select:focus {
-            border-color: #087f5b;
-            box-shadow: 0 0 0 3px rgba(8,127,91,.1);
-        }
+        input:focus, select:focus {
+            border-color: #087f5b;
+            box-shadow: 0 0 0 3px rgba(8,127,91,.1);
+        }
 
-        .radio-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 5px;
-        }
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
 
-        .radio-option {
-            flex: 1;
-            border: 1px solid #ccd5df;
-            border-radius: 8px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+        .radio-option {
+            flex: 1;
+            border: 1px solid #ccd5df;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-        .radio-option:hover {
-            border-color: #087f5b;
-            background: #f8fafc;
-        }
+        .radio-option:hover {
+            border-color: #087f5b;
+            background: #f8fafc;
+        }
 
-        .radio-option input[type="radio"] {
-            width: auto;
-            cursor: pointer;
-        }
+        .radio-option input[type="radio"] {
+            width: auto;
+            cursor: pointer;
+        }
 
-        .back-button {
-            background: #64748b;
-            margin-right: 8px;
-        }
+        .back-button {
+            background: #64748b;
+            margin-right: 8px;
+        }
 
-        .back-button:hover { background: #475569; }
+        .back-button:hover { background: #475569; }
 
-        #otpSection, #repaySuccessSection {
-            display: none;
-            margin-top: 25px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 25px;
-        }
+        #otpSection, #repaySuccessSection {
+            display: none;
+            margin-top: 25px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 25px;
+        }
 
-        #otpSection.active, #repaySuccessSection.active { display: block; }
+        #otpSection.active, #repaySuccessSection.active { display: block; }
 
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.6);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 200;
-        }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 200;
+        }
 
-        .modal-overlay.active { display: flex; }
+        .modal-overlay.active { display: flex; }
 
-        .modal {
-            background: white;
-            width: 100%;
-            max-width: 480px;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            animation: modalIn .3s ease;
-        }
+        .modal {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            animation: modalIn .3s ease;
+        }
 
-        .modal-icon {
-            font-size: 45px;
-            margin-bottom: 15px;
-        }
+        .modal-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
 
-        .modal h2 {
-            color: #063970;
-            margin-bottom: 15px;
-        }
+        .modal h2 {
+            color: #063970;
+            margin-bottom: 15px;
+        }
 
-        .modal p {
-            color: #475569;
-            line-height: 1.6;
-            margin-bottom: 22px;
-        }
+        .modal p {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
 
-        @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        .success {
-            display: none;
-            text-align: center;
-            padding: 25px;
-            color: #087f5b;
-        }
+        .success {
+            display: none;
+            text-align: center;
+            padding: 25px;
+            color: #087f5b;
+        }
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #64748b;
-            font-size: 13px;
-        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+            font-size: 13px;
+        }
 
-        @media(max-width: 800px) {
-            .services { grid-template-columns: 1fr; }
-            .welcome-content h1 { font-size: 32px; }
-            .radio-group { flex-direction: column; }
-            .info-strip-badge {
-                padding: 0 10px;
-                font-size: 11px;
-            }
-        }
-    </style>
+        @media(max-width: 800px) {
+            .services { grid-template-columns: 1fr; }
+            .welcome-content h1 { font-size: 32px; }
+            .radio-group { flex-direction: column; }
+            .info-strip-badge {
+                padding: 0 10px;
+                font-size: 11px;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <section id="welcome" aria-label="Welcome screen">
-    <div class="welcome-content">
-        <div class="credit-logo-container">
-            <img src="image_6c64d7.PNG" alt="CRB Kenya Logo">
-        </div>
-        <h1>CRB Kenya</h1>
-        <p>Credit information services by TransUnion Kenya</p>
-    </div>
+    <div class="welcome-content">
+        <div class="credit-logo-container">
+            <img src="image_6c64d7.PNG" alt="CRB Kenya Logo">
+        </div>
+        <h1>CRB Kenya</h1>
+        <p>Credit information services by TransUnion Kenya</p>
+    </div>
 </section>
 
 <header>
-    <h2>CRB Kenya</h2>
-    <span class="demo-label">14 SEPT, 2026</span>
+    <h2>CRB Kenya</h2>
+    <span class="demo-label">14 SEPT, 2026</span>
 </header>
 
 <div class="info-strip-container">
-    <div class="info-strip-badge">Updates</div>
-    <div class="info-strip-wrapper">
-        <div class="info-strip-content">
-            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>CBK Directive:</strong> Citizens are entitled to one free credit report per calendar year.</div>
-            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>System Notice:</strong> Automatic clearance certificate dispatch now active via M-Pesa.</div>
-            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>New Regulations:</strong> Credit repair options updated for defaulted digital mobile loans under KES 5,000.</div>
-            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>Support Alert:</strong> Processing times for manual clearance disputes currently take 24–48 hours.</div>
+    <div class="info-strip-badge">Updates</div>
+    <div class="info-strip-wrapper">
+        <div class="info-strip-content">
+            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>CBK Directive:</strong> Citizens are entitled to one free credit report per calendar year.</div>
+            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>System Notice:</strong> Automatic clearance certificate dispatch now active via M-Pesa.</div>
+            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>New Regulations:</strong> Credit repair options updated for defaulted digital mobile loans under KES 5,000.</div>
+            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>Support Alert:</strong> Processing times for manual clearance disputes currently take 24–48 hours.</div>
 
-            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>CBK Directive:</strong> Citizens are entitled to one free credit report per calendar year.</div>
-            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>System Notice:</strong> Automatic clearance certificate dispatch now active via M-Pesa.</div>
-            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>New Regulations:</strong> Credit repair options updated for defaulted digital mobile loans under KES 5,000.</div>
-            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>Support Alert:</strong> Processing times for manual clearance disputes currently take 24–48 hours.</div>
-        </div>
-    </div>
+            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>CBK Directive:</strong> Citizens are entitled to one free credit report per calendar year.</div>
+            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>System Notice:</strong> Automatic clearance certificate dispatch now active via M-Pesa.</div>
+            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>New Regulations:</strong> Credit repair options updated for defaulted digital mobile loans under KES 5,000.</div>
+            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>Support Alert:</strong> Processing times for manual clearance disputes currently take 24–48 hours.</div>
+        </div>
+    </div>
 </div>
 
 <main>
-    <section id="home">
-        <div class="hero">
-            <h1>Welcome to CRB Kenya</h1>
-            <p>Instant access to your CRB status, credit score and personalized financial insights starts here.</p>
-        </div>
+    <section id="home">
+        <div class="hero">
+            <h1>Welcome to CRB Kenya</h1>
+            <p>Instant access to your CRB status, credit score and personalized financial insights starts here.</p>
+        </div>
 
-        <div class="services">
-            <div class="service-card">
-                <div class="service-icon" aria-hidden="true">📊</div>
-                <h3>Credit Report &amp; Score</h3>
-                <p>Get your score and know how you are performing in terms of credit repayment.</p>
-                <button type="button" id="btnReport">Continue</button>
-            </div>
+        <div class="services">
+            <div class="service-card">
+                <div class="service-icon" aria-hidden="true">📊</div>
+                <h3>Credit Report &amp; Score</h3>
+                <p>Get your score and know how you are performing in terms of credit repayment.</p>
+                <button type="button" id="btnReport">Continue</button>
+            </div>
 
-            <div class="service-card">
-                <div class="service-icon" aria-hidden="true">💳</div>
-                <h3>Repay Defaulted Loan(s)</h3>
-                <p>Settle outstanding defaulted accounts directly with listed digital and financial lenders.</p>
-                <button type="button" id="btnRepay">Continue</button>
-            </div>
+            <div class="service-card">
+                <div class="service-icon" aria-hidden="true">💳</div>
+                <h3>Repay Defaulted Loan(s)</h3>
+                <p>Settle outstanding defaulted accounts directly with listed digital and financial lenders.</p>
+                <button type="button" id="btnRepay">Continue</button>
+            </div>
 
-            <div class="service-card">
-                <div class="service-icon" aria-hidden="true">📜</div>
-                <h3>Clearance Certificate</h3>
-                <p>Get your Clearance Certificate as proof that you do not have outstanding arrears or in default of loan payments.</p>
-                <button type="button" id="btnCertificate">Continue</button>
-            </div>
-        </div>
-    </section>
+            <div class="service-card">
+                <div class="service-icon" aria-hidden="true">📜</div>
+                <h3>Clearance Certificate</h3>
+                <p>Get your Clearance Certificate as proof that you do not have outstanding arrears or in default of loan payments.</p>
+                <button type="button" id="btnCertificate">Continue</button>
+            </div>
+        </div>
+    </section>
 
-    <section id="reportForm" class="form-container" aria-hidden="true">
-        <h2>Credit Report &amp; Score</h2>
-        <p class="form-description">Enter information below.</p>
+    <section id="reportForm" class="form-container" aria-hidden="true">
+        <h2>Credit Report &amp; Score</h2>
+        <p class="form-description">Enter information below.</p>
 
-        <div class="demo-warning">
-            <strong>Note:</strong> Enter accurate details as they appear on your National ID. Your mobile number MUST be registered with your National ID.
-        </div>
+        <div class="demo-warning">
+            <strong>Note:</strong> Enter accurate details as they appear on your National ID. Your mobile number MUST be registered with your National ID.
+        </div>
 
-        <form id="creditForm">
-            <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input id="fullName" type="text" placeholder="e.g. John Doe" required>
-            </div>
+        <form id="creditForm">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input id="fullName" type="text" placeholder="e.g. John Doe" required>
+            </div>
 
-            <div class="form-group">
-                <label for="demoId">ID Number</label>
-                <input id="demoId" type="text" placeholder="e.g. 12345678" required>
-            </div>
+            <div class="form-group">
+                <label for="demoId">ID Number</label>
+                <input id="demoId" type="text" placeholder="e.g. 12345678" required>
+            </div>
 
-            <div class="form-group">
-                <label for="demoPhone">Mobile Number</label>
-                <input id="demoPhone" type="tel" placeholder="e.g. 0700000000" required>
-            </div>
+            <div class="form-group">
+                <label for="demoPhone">Mobile Number</label>
+                <input id="demoPhone" type="tel" placeholder="e.g. 0700000000" required>
+            </div>
 
-            <div class="form-group">
-                <label for="demoEmail">Email</label>
-                <input id="demoEmail" type="email" placeholder="demo@example.com" required>
-            </div>
+            <div class="form-group">
+                <label for="demoEmail">Email</label>
+                <input id="demoEmail" type="email" placeholder="demo@example.com" required>
+            </div>
 
-            <button type="button" class="back-button btn-go-home">Back</button>
-            <button type="submit">Submit Request</button>
-        </form>
+            <button type="button" class="back-button btn-go-home">Back</button>
+            <button type="submit">Submit Request</button>
+        </form>
 
-        <div id="otpSection">
-            <h3>OTP Verification</h3>
-            <p class="form-description">ONLY Enter OTP sent to your mobile number after payment:</p>
+        <div id="otpSection">
+            <h3>OTP Verification</h3>
+            <p class="form-description">ONLY Enter OTP sent to your mobile number after payment:</p>
 
-            <div class="form-group">
-                <label for="demoOtp">Enter OTP</label>
-                <input id="demoOtp" type="text" inputmode="numeric" maxlength="6" placeholder="123456">
-            </div>
+            <div class="form-group">
+                <label for="demoOtp">Enter OTP</label>
+                <input id="demoOtp" type="text" inputmode="numeric" maxlength="6" placeholder="123456">
+            </div>
 
-            <button type="button" id="btnVerifyOtp">Verify OTP</button>
+            <button type="button" id="btnVerifyOtp">Verify OTP</button>
 
-            <div id="successMessage" class="success">
-                <h3>✓ Verification Successful. Your credit report and score will be sent within 60 seconds</h3>
-                <p>This is a demonstration only. No real credit report was accessed.</p>
-            </div>
-        </div>
-    </section>
+            <div id="successMessage" class="success">
+                <h3>✓ Verification Successful. Your credit report and score will be sent within 60 seconds</h3>
+                <p>This is a demonstration only. No real credit report was accessed.</p>
+            </div>
+        </div>
+    </section>
 
-    <section id="repayForm" class="form-container" aria-hidden="true">
-        <h2>Repay Defaulted Loan(s)</h2>
-        <p class="form-description">Select the financial institution and details of the defaulted account you wish to clear.</p>
+    <section id="repayForm" class="form-container" aria-hidden="true">
+        <h2>Repay Defaulted Loan(s)</h2>
+        <p class="form-description">Select the financial institution and details of the defaulted account you wish to clear.</p>
 
-        <form id="loanRepayForm">
-            <div class="form-group">
-                <label for="lenderSelect">Select Lender</label>
-                <select id="lenderSelect" required>
-                    <option value="" disabled selected>-- Select Lender / Credit Provider --</option>
-                    <option value="tala">Tala Mobile</option>
-                    <option value="branch">Branch International</option>
-                    <option value="mshwari">M-Shwari / NCBA</option>
-                    <option value="fuliza">Fuliza / Safaricom</option>
-                    <option value="kcb_mpesa">KCB M-Pesa</option>
-                    <option value="zenka">Zenka Finance</option>
-                    <option value="okash">Okash</option>
-                    <option value="equity">Equity Bank (Eazzy Loan)</option>
-                    <option value="coop">Co-operative Bank (MCo-op Cash)</option>
-                    <option value="other">Other Certified Lender</option>
-                </select>
-            </div>
+        <form id="loanRepayForm">
+            <div class="form-group">
+                <label for="lenderSelect">Select Lender</label>
+                <select id="lenderSelect" required>
+                    <option value="" disabled selected>-- Select Lender / Credit Provider --</option>
+                    <option value="tala">Tala Mobile</option>
+                    <option value="branch">Branch International</option>
+                    <option value="mshwari">M-Shwari / NCBA</option>
+                    <option value="fuliza">Fuliza / Safaricom</option>
+                    <option value="kcb_mpesa">KCB M-Pesa</option>
+                    <option value="zenka">Zenka Finance</option>
+                    <option value="okash">Okash</option>
+                    <option value="equity">Equity Bank (Eazzy Loan)</option>
+                    <option value="coop">Co-operative Bank (MCo-op Cash)</option>
+                    <option value="other">Other Certified Lender</option>
+                </select>
+            </div>
 
-            <div class="form-group">
-                <label for="accountRef">Account Reference Number</label>
-                <input id="accountRef" type="text" placeholder="e.g. Loan ID or Mobile Number" required>
-            </div>
+            <div class="form-group">
+                <label for="accountRef">Account Reference Number</label>
+                <input id="accountRef" type="text" placeholder="e.g. Loan ID or Mobile Number" required>
+            </div>
 
-            <div class="form-group">
-                <label for="repayAmount">Amount to Pay (KES)</label>
-                <input id="repayAmount" type="number" placeholder="e.g. 5000" min="1" required>
-            </div>
+            <div class="form-group">
+                <label for="repayAmount">Amount to Pay (KES)</label>
+                <input id="repayAmount" type="number" placeholder="e.g. 5000" min="1" required>
+            </div>
 
-            <div class="form-group">
-                <label for="listingDate">CRB Listing Date</label>
-                <input id="listingDate" type="date" required>
-            </div>
+            <div class="form-group">
+                <label for="listingDate">CRB Listing Date</label>
+                <input id="listingDate" type="date" required>
+            </div>
 
-            <fieldset class="form-group" style="border:none;">
-                <legend style="font-weight:bold; color:#334155; margin-bottom:7px;">Select Payment Method</legend>
-                <div class="radio-group">
-                    <label class="radio-option">
-                        <input type="radio" name="payMethod" value="mpesa" checked>
-                        <span>📲 M-Pesa STK Push</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="payMethod" value="card">
-                        <span>💳 Debit / Credit Card</span>
-                    </label>
-                </div>
-            </fieldset>
+            <fieldset class="form-group" style="border:none;">
+                <legend style="font-weight:bold; color:#334155; margin-bottom:7px;">Select Payment Method</legend>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="payMethod" value="mpesa" checked>
+                        <span>📲 M-Pesa STK Push</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="payMethod" value="card">
+                        <span>💳 Debit / Credit Card</span>
+                    </label>
+                </div>
+            </fieldset>
 
-            <div id="mpesaFields" class="form-group">
-                <label for="mpesaNumber">M-Pesa Mobile Number</label>
-                <input id="mpesaNumber" type="tel" placeholder="e.g. 0712345678" required>
-            </div>
+            <div id="mpesaFields" class="form-group">
+                <label for="mpesaNumber">M-Pesa Mobile Number</label>
+                <input id="mpesaNumber" type="tel" placeholder="e.g. 0712345678" required>
+            </div>
 
-            <div id="cardFields" class="form-group" style="display: none;">
-                <div class="form-group">
-                    <label for="cardNumber">Card Number</label>
-                    <input id="cardNumber" type="text" placeholder="1234 5678 9101 1121" maxlength="19">
-                </div>
-                <div style="display: flex; gap: 15px;">
-                    <div style="flex: 1;">
-                        <label for="cardExpiry">Expiry Date</label>
-                        <input id="cardExpiry" type="text" placeholder="MM/YY" maxlength="5">
-                    </div>
-                    <div style="flex: 1;">
-                        <label for="cardCvc">CVC/CVV</label>
-                        <input id="cardCvc" type="password" placeholder="123" maxlength="4">
-                    </div>
-                </div>
-            </div>
+            <div id="cardFields" class="form-group" style="display: none;">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input id="cardNumber" type="text" placeholder="1234 5678 9101 1121" maxlength="19">
+                </div>
+                <div style="display: flex; gap: 15px;">
+                    <div style="flex: 1;">
+                        <label for="cardExpiry">Expiry Date</label>
+                        <input id="cardExpiry" type="text" placeholder="MM/YY" maxlength="5">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="cardCvc">CVC/CVV</label>
+                        <input id="cardCvc" type="password" placeholder="123" maxlength="4">
+                    </div>
+                </div>
+            </div>
 
-            <button type="button" class="back-button btn-go-home">Back</button>
-            <button type="submit">Proceed to Pay</button>
-        </form>
+            <button type="button" class="back-button btn-go-home">Back</button>
+            <button type="submit">Proceed to Pay</button>
+        </form>
 
-        <div id="repaySuccessSection" class="success">
-            <h3>✓ Repayment Processing Initiated</h3>
-            <p>If you selected M-Pesa, check your phone for the STK prompt. Once processed, an update notification will be dispatched to the lender and CRB within 24 hours.</p>
-        </div>
-    </section>
+        <div id="repaySuccessSection" class="success">
+            <h3>✓ Repayment Processing Initiated</h3>
+            <p>If you selected M-Pesa, check your phone for the STK prompt. Once processed, an update notification will be dispatched to the lender and CRB within 24 hours.</p>
+        </div>
+    </section>
 </main>
 
 <footer>
-    CRB-Kenya &copy; 2026 — TransUnion Credit Report. All rights reserved.
+    CRB-Kenya &copy; 2026 — TransUnion Credit Report. All rights reserved.
 </footer>
 
 <div id="paymentModal" class="modal-overlay" aria-hidden="true" role="dialog">
-    <div class="modal">
-        <div class="modal-icon" aria-hidden="true">ℹ️</div>
-        <h2>Payment Procedure</h2>
-        <p>
-            To access your report and score, please pay KES 50 to Safaricom paybill 212121 with your ID as account number.
-            <br><br>
-            <strong>ONLY pay using your registered mobile number as provided above.</strong>
-        </p>
-        <button type="button" class="btn-close-payment">Already paid</button>
-        <button type="button" class="btn-close-payment" style="background:#64748b; margin-top:8px;">Close</button>
-    </div>
+    <div class="modal">
+        <div class="modal-icon" aria-hidden="true">ℹ️</div>
+        <h2>Payment Procedure</h2>
+        <p>
+            To access your report and score, please pay KES 50 to Safaricom paybill 212121 with your ID as account number.
+            <br><br>
+            <strong>ONLY pay using your registered mobile number as provided above.</strong>
+        </p>
+        <button type="button" class="btn-close-payment">Already paid</button>
+        <button type="button" class="btn-close-payment" style="background:#64748b; margin-top:8px;">Close</button>
+    </div>
 </div>
 
 <div id="certificateModal" class="modal-overlay" aria-hidden="true" role="dialog">
-    <div class="modal">
-        <div class="modal-icon" aria-hidden="true">📜</div>
-        <h2>Clearance Certificate Application</h2>
-        <p>
-            To apply for an official Certificate of Clearance, your credit record must show no non-performing loan accounts.
-            <br><br>
-            A processing fee of <strong>KES 2,200</strong> applies as per Central Bank of Kenya (CBK) guidelines.
-            <br><br>
-            Please pull a fresh Credit Report first to ensure all defaulted loans have been fully settled before proceeding.
-        </p>
-        <button type="button" id="btnCertToGoReport">Check Credit Report First</button>
-        <button type="button" id="btnCertClose" style="background: #64748b; margin-top: 10px;">Close</button>
-    </div>
+    <div class="modal">
+        <div class="modal-icon" aria-hidden="true">📜</div>
+        <h2>Clearance Certificate Application</h2>
+        <p>
+            To apply for an official Certificate of Clearance, your credit record must show no non-performing loan accounts.
+            <br><br>
+            A processing fee of <strong>KES 2,200</strong> applies as per Central Bank of Kenya (CBK) guidelines.
+            <br><br>
+            Please pull a fresh Credit Report first to ensure all defaulted loans have been fully settled before proceeding.
+        </p>
+        <button type="button" id="btnCertToGoReport">Check Credit Report First</button>
+        <button type="button" id="btnCertClose" style="background: #64748b; margin-top: 10px;">Close</button>
+    </div>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const home = document.getElementById("home");
-        const reportForm = document.getElementById("reportForm");
-        const repayForm = document.getElementById("repayForm");
-        const creditForm = document.getElementById("creditForm");
-        const loanRepayForm = document.getElementById("loanRepayForm");
-        const paymentModal = document.getElementById("paymentModal");
-        const certificateModal = document.getElementById("certificateModal");
-        const otpSection = document.getElementById("otpSection");
-        const repaySuccessSection = document.getElementById("repaySuccessSection");
-        const mpesaFields = document.getElementById("mpesaFields");
-        const cardFields = document.getElementById("cardFields");
+    document.addEventListener("DOMContentLoaded", () => {
+        const home = document.getElementById("home");
+        const reportForm = document.getElementById("reportForm");
+        const repayForm = document.getElementById("repayForm");
+        const creditForm = document.getElementById("creditForm");
+        const loanRepayForm = document.getElementById("loanRepayForm");
+        const paymentModal = document.getElementById("paymentModal");
+        const certificateModal = document.getElementById("certificateModal");
+        const otpSection = document.getElementById("otpSection");
+        const repaySuccessSection = document.getElementById("repaySuccessSection");
+        const mpesaFields = document.getElementById("mpesaFields");
+        const cardFields = document.getElementById("cardFields");
 
-        function hideAllSections() {
-            home.style.display = "none";
-            reportForm.classList.remove("active");
-            reportForm.setAttribute("aria-hidden", "true");
-            repayForm.classList.remove("active");
-            repayForm.setAttribute("aria-hidden", "true");
-        }
+        function hideAllSections() {
+            home.style.display = "none";
+            reportForm.classList.remove("active");
+            reportForm.setAttribute("aria-hidden", "true");
+            repayForm.classList.remove("active");
+            repayForm.setAttribute("aria-hidden", "true");
+        }
 
-        function goHome() {
-            reportForm.classList.remove("active");
-            reportForm.setAttribute("aria-hidden", "true");
-            repayForm.classList.remove("active");
-            repayForm.setAttribute("aria-hidden", "true");
-            home.style.display = "block";
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
+        function goHome() {
+            reportForm.classList.remove("active");
+            reportForm.setAttribute("aria-hidden", "true");
+            repayForm.classList.remove("active");
+            repayForm.setAttribute("aria-hidden", "true");
+            home.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
 
-        function showReportForm() {
-            hideAllSections();
-            reportForm.classList.add("active");
-            reportForm.removeAttribute("aria-hidden");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
+        function showReportForm() {
+            hideAllSections();
+            reportForm.classList.add("active");
+            reportForm.removeAttribute("aria-hidden");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
 
-        function showRepayForm() {
-            hideAllSections();
-            repayForm.classList.add("active");
-            repayForm.removeAttribute("aria-hidden");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
+        function showRepayForm() {
+            hideAllSections();
+            repayForm.classList.add("active");
+            repayForm.removeAttribute("aria-hidden");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
 
-        document.getElementById("btnReport").addEventListener("click", showReportForm);
-        document.getElementById("btnRepay").addEventListener("click", showRepayForm);
-        document.getElementById("btnCertificate").addEventListener("click", () => {
-            certificateModal.classList.add("active");
-            certificateModal.removeAttribute("aria-hidden");
-        });
+        document.getElementById("btnReport").addEventListener("click", showReportForm);
+        document.getElementById("btnRepay").addEventListener("click", showRepayForm);
+        document.getElementById("btnCertificate").addEventListener("click", () => {
+            certificateModal.classList.add("active");
+            certificateModal.removeAttribute("aria-hidden");
+        });
 
-        document.querySelectorAll(".btn-go-home").forEach(btn => {
-            btn.addEventListener("click", goHome);
-        });
+        document.querySelectorAll(".btn-go-home").forEach(btn => {
+            btn.addEventListener("click", goHome);
+        });
 
-        document.getElementById("btnCertClose").addEventListener("click", () => {
-            certificateModal.classList.remove("active");
-            certificateModal.setAttribute("aria-hidden", "true");
-        });
+        document.getElementById("btnCertClose").addEventListener("click", () => {
+            certificateModal.classList.remove("active");
+            certificateModal.setAttribute("aria-hidden", "true");
+        });
 
-        document.getElementById("btnCertToGoReport").addEventListener("click", () => {
-            certificateModal.classList.remove("active");
-            certificateModal.setAttribute("aria-hidden", "true");
-            showReportForm();
-        });
+        document.getElementById("btnCertToGoReport").addEventListener("click", () => {
+            certificateModal.classList.remove("active");
+            certificateModal.setAttribute("aria-hidden", "true");
+            showReportForm();
+        });
 
-        document.querySelectorAll(".btn-close-payment").forEach(btn => {
-            btn.addEventListener("click", () => {
-                paymentModal.classList.remove("active");
-                paymentModal.setAttribute("aria-hidden", "true");
-                otpSection.classList.add("active");
-                otpSection.scrollIntoView({ behavior: "smooth" });
-            });
-        });
+        document.querySelectorAll(".btn-close-payment").forEach(btn => {
+            btn.addEventListener("click", () => {
+                paymentModal.classList.remove("active");
+                paymentModal.setAttribute("aria-hidden", "true");
+                otpSection.classList.add("active");
+                otpSection.scrollIntoView({ behavior: "smooth" });
+            });
+        });
 
-        document.querySelectorAll('input[name="payMethod"]').forEach(radio => {
-            radio.addEventListener("change", (e) => {
-                if (e.target.value === "mpesa") {
-                    mpesaFields.style.display = "block";
-                    cardFields.style.display = "none";
-                    document.getElementById("mpesaNumber").required = true;
-                    document.getElementById("cardNumber").required = false;
-                    document.getElementById("cardExpiry").required = false;
-                    document.getElementById("cardCvc").required = false;
-                } else {
-                    mpesaFields.style.display = "none";
-                    cardFields.style.display = "block";
-                    document.getElementById("mpesaNumber").required = false;
-                    document.getElementById("cardNumber").required = true;
-                    document.getElementById("cardExpiry").required = true;
-                    document.getElementById("cardCvc").required = true;
-                }
-            });
-        });
+        document.querySelectorAll('input[name="payMethod"]').forEach(radio => {
+            radio.addEventListener("change", (e) => {
+                if (e.target.value === "mpesa") {
+                    mpesaFields.style.display = "block";
+                    cardFields.style.display = "none";
+                    document.getElementById("mpesaNumber").required = true;
+                    document.getElementById("cardNumber").required = false;
+                    document.getElementById("cardExpiry").required = false;
+                    document.getElementById("cardCvc").required = false;
+                } else {
+                    mpesaFields.style.display = "none";
+                    cardFields.style.display = "block";
+                    document.getElementById("mpesaNumber").required = false;
+                    document.getElementById("cardNumber").required = true;
+                    document.getElementById("cardExpiry").required = true;
+                    document.getElementById("cardCvc").required = true;
+                }
+            });
+        });
 
-        creditForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            paymentModal.classList.add("active");
-            paymentModal.removeAttribute("aria-hidden");
-        });
+        creditForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            paymentModal.classList.add("active");
+            paymentModal.removeAttribute("aria-hidden");
+        });
 
-        loanRepayForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            repaySuccessSection.classList.add("active");
-            repaySuccessSection.style.display = "block";
-            repaySuccessSection.scrollIntoView({ behavior: "smooth" });
-        });
+        loanRepayForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            repaySuccessSection.classList.add("active");
+            repaySuccessSection.style.display = "block";
+            repaySuccessSection.scrollIntoView({ behavior: "smooth" });
+        });
 
-        document.getElementById("btnVerifyOtp").addEventListener("click", () => {
-            const otp = document.getElementById("demoOtp").value.trim();
-            const success = document.getElementById("successMessage");
+        document.getElementById("btnVerifyOtp").addEventListener("click", () => {
+            const otp = document.getElementById("demoOtp").value.trim();
+            const success = document.getElementById("successMessage");
 
-            if (otp === "123456") {
-                success.style.display = "block";
-            } else {
-                alert("Incorrect demo OTP. Enter 123456.");
-            }
-        });
-    });
+            if (otp === "123456") {
+                success.style.display = "block";
+            } else {
+                alert("Incorrect demo OTP. Enter 123456.");
+            }
+        });
+    });
 </script>
 </body>
 </html>
