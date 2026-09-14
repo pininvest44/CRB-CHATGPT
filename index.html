@@ -101,7 +101,7 @@
             }
         }
 
-        /* ---------- MAIN ---------- */
+        /* ---------- HEADER ---------- */
 
         header {
             background: #063970;
@@ -124,6 +124,83 @@
             font-size: 12px;
             font-weight: bold;
         }
+
+        /* ---------- AUTO-SLIDING INFORMATION STRIP ---------- */
+
+        .info-strip-container {
+            background: #042952;
+            color: #ffffff;
+            border-bottom: 2px solid #087f5b;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            font-size: 14px;
+            height: 42px;
+        }
+
+        .info-strip-badge {
+            background: #087f5b;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 0 16px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            z-index: 2;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.2);
+        }
+
+        .info-strip-wrapper {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-strip-content {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+        }
+
+        .info-strip-content:hover {
+            animation-play-state: paused; /* Pauses sliding when user hovers */
+        }
+
+        .info-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 25px;
+            opacity: 0.95;
+        }
+
+        .info-item span.bullet {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #ffc107;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* ---------- MAIN ---------- */
 
         main {
             max-width: 1050px;
@@ -397,6 +474,11 @@
             .radio-group {
                 flex-direction: column;
             }
+
+            .info-strip-badge {
+                padding: 0 10px;
+                font-size: 11px;
+            }
         }
     </style>
 </head>
@@ -418,6 +500,26 @@
     <h2>CRB-Kenya</h2>
     <span class="demo-label">12 SEPT, 2026</span>
 </header>
+
+<!-- AUTO-SLIDING INFORMATION STRIP -->
+<div class="info-strip-container">
+    <div class="info-strip-badge">Updates</div>
+    <div class="info-strip-wrapper">
+        <div class="info-strip-content">
+            <!-- First Set of Updates -->
+            <div class="info-item"><span class="bullet"></span><strong>CBK Directive:</strong> Citizens are entitled to one free credit report per calendar year.</div>
+            <div class="info-item"><span class="bullet"></span><strong>System Notice:</strong> Automatic clearance certificate dispatch now active via M-Pesa.</div>
+            <div class="info-item"><span class="bullet"></span><strong>New Regulations:</strong> Credit repair options updated for defaulted digital mobile loans under KES 5,000.</div>
+            <div class="info-item"><span class="bullet"></span><strong>Support Alert:</strong> Processing times for manual clearance disputes currently take 24–48 hours.</div>
+
+            <!-- Duplicate Set for Seamless Continuous Loop -->
+            <div class="info-item"><span class="bullet"></span><strong>CBK Directive:</strong> Citizens are entitled to one free credit report per calendar year.</div>
+            <div class="info-item"><span class="bullet"></span><strong>System Notice:</strong> Automatic clearance certificate dispatch now active via M-Pesa.</div>
+            <div class="info-item"><span class="bullet"></span><strong>New Regulations:</strong> Credit repair options updated for defaulted digital mobile loans under KES 5,000.</div>
+            <div class="info-item"><span class="bullet"></span><strong>Support Alert:</strong> Processing times for manual clearance disputes currently take 24–48 hours.</div>
+        </div>
+    </div>
+</div>
 
 <main>
 
