@@ -1,801 +1,595 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRB Kenya</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRB Kenya | Credit Report & Clearance Services</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-dark: #0f172a;
+      --secondary: #2563eb;
+      --accent: #d97706;
+      --light-bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
 
-        body {
-            background: #f3f7fb;
-            color: #172033;
-            min-height: 100vh;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
 
-        #welcome {
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            background: linear-gradient(135deg, #063970, #087f5b);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            animation: fadeOut 1s ease 4s forwards;
-        }
+    body {
+      background-color: var(--light-bg);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-        .welcome-content {
-            text-align: center;
-            animation: scaleIn 1.2s ease;
-        }
+    /* Header */
+    header {
+      background-color: var(--primary-dark);
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-        .credit-logo-container {
-            width: 140px;
-            height: 140px;
-            background: #ffffff;
-            border-radius: 50%;
-            margin: 0 auto 25px;
-            border: 4px solid rgba(255, 255, 255, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            animation: pulse 1.8s infinite ease-in-out;
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
 
-        .credit-logo-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
+    .brand-logo {
+      background: var(--accent);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
 
-        .welcome-content h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
-        }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
 
-        .welcome-content p {
-            font-size: 17px;
-            opacity: .9;
-        }
+    nav a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-            }
-            50% {
-                transform: scale(1.06);
-                box-shadow: 0 0 0 22px rgba(255, 255, 255, 0);
-            }
-        }
+    nav a:hover, nav a.active {
+      color: #ffffff;
+    }
 
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(.7);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
+    /* Layout & Main Content */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
 
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-            }
-        }
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
 
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 90;
-            background: #063970;
-            color: white;
-            padding: 18px 7%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+    .hero h1 {
+      color: var(--primary);
+      font-size: 2.25rem;
+      margin-bottom: 0.75rem;
+    }
 
-        header h2 {
-            font-size: 23px;
-        }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
-        .demo-label {
-            background: #ffc107;
-            color: #222;
-            padding: 6px 11px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
+    /* Cards Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
 
-        .info-strip-container {
-            position: sticky;
-            top: 61px;
-            z-index: 89;
-            background: #042952;
-            color: #ffffff;
-            border-bottom: 2px solid #087f5b;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            font-size: 14px;
-            height: 42px;
-        }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-        .info-strip-badge {
-            background: #087f5b;
-            color: #ffffff;
-            font-weight: bold;
-            padding: 0 16px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            font-size: 12px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            z-index: 2;
-            box-shadow: 3px 0 10px rgba(0,0,0,0.2);
-        }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
 
-        .info-strip-wrapper {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
+    .card h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
 
-        .info-strip-content {
-            display: flex;
-            align-items: center;
-            position: absolute;
-            white-space: nowrap;
-            animation: marquee 25s linear infinite;
-        }
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
 
-        .info-strip-content:hover {
-            animation-play-state: paused;
-        }
+    .btn {
+      background-color: var(--secondary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s;
+    }
 
-        .info-item {
-            display: inline-flex;
-            align-items: center;
-            padding: 0 25px;
-            opacity: 0.95;
-        }
+    .btn:hover {
+      background-color: var(--primary);
+    }
 
-        .info-item span.bullet {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background: #ffc107;
-            border-radius: 50%;
-            margin-right: 12px;
-        }
+    /* Auto-sliding Testimonials Section */
+    .testimonials-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2.5rem 1.5rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
+    .section-title {
+      color: var(--primary-dark);
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
 
-        main {
-            max-width: 1050px;
-            margin: 45px auto;
-            padding: 0 20px;
-        }
+    .testimonial-carousel {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      min-height: 160px;
+    }
 
-        .hero {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+    .testimonial-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transform: translateX(30px);
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+      pointer-events: none;
+    }
 
-        .hero h1 {
-            font-size: 34px;
-            color: #063970;
-            margin-bottom: 10px;
-        }
+    .testimonial-slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+      position: relative;
+    }
 
-        .hero p { color: #64748b; }
+    .stars {
+      color: var(--accent);
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
 
-        .services {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
-        }
+    .testimonial-text {
+      font-style: italic;
+      color: var(--text-main);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
 
-        .service-card {
-            background: white;
-            padding: 30px 22px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,.07);
-            border: 1px solid #e5eaf0;
-            text-align: center;
-            transition: .3s;
-        }
+    .testimonial-author {
+      font-weight: 700;
+      color: var(--primary);
+    }
 
-        .service-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 30px rgba(0,0,0,.12);
-        }
+    .testimonial-role {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
 
-        .service-icon {
-            font-size: 42px;
-            margin-bottom: 18px;
-        }
+    /* Dots Indicator */
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
 
-        .service-card h3 {
-            color: #063970;
-            margin-bottom: 12px;
-        }
+    .dot {
+      width: 10px;
+      height: 10px;
+      background-color: var(--border-color);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
 
-        .service-card p {
-            color: #64748b;
-            line-height: 1.5;
-            margin-bottom: 22px;
-        }
+    .dot.active {
+      background-color: var(--secondary);
+      transform: scale(1.25);
+    }
 
-        button {
-            border: none;
-            cursor: pointer;
-            border-radius: 8px;
-            padding: 13px 22px;
-            background: #087f5b;
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
-            transition: .2s;
-        }
+    /* Form Container Views */
+    .view-panel {
+      display: none;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      max-width: 600px;
+      margin: 0 auto;
+      border: 1px solid var(--border-color);
+    }
 
-        button:hover {
-            background: #066b4d;
-            transform: translateY(-1px);
-        }
+    .view-panel.active {
+      display: block;
+    }
 
-        .form-container {
-            display: none;
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 35px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,.08);
-        }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
 
-        .form-container.active { display: block; }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
 
-        .form-container h2 {
-            color: #063970;
-            margin-bottom: 8px;
-        }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
 
-        .form-description {
-            color: #64748b;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
+    /* Footer */
+    footer {
+      background-color: var(--primary-dark);
+      color: #cbd5e1;
+      padding: 3rem 2rem 1.5rem 2rem;
+      margin-top: auto;
+    }
 
-        .demo-warning {
-            background: #fff8db;
-            border: 1px solid #f0d66a;
-            color: #735900;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 22px;
-            font-size: 14px;
-        }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
 
-        .form-group { margin-bottom: 18px; }
+    .footer-col h4 {
+      color: #ffffff;
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: bold;
-            color: #334155;
-        }
+    .footer-col h4::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 30px;
+      height: 2px;
+      background-color: var(--accent);
+    }
 
-        input, select {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid #ccd5df;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-            background: white;
-        }
+    .footer-links {
+      list-style: none;
+    }
 
-        input:focus, select:focus {
-            border-color: #087f5b;
-            box-shadow: 0 0 0 3px rgba(8,127,91,.1);
-        }
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
 
-        .radio-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 5px;
-        }
+    .footer-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
 
-        .radio-option {
-            flex: 1;
-            border: 1px solid #ccd5df;
-            border-radius: 8px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+    .footer-links a:hover {
+      color: #ffffff;
+    }
 
-        .radio-option:hover {
-            border-color: #087f5b;
-            background: #f8fafc;
-        }
+    .contact-info li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      color: #94a3b8;
+    }
 
-        .radio-option input[type="radio"] {
-            width: auto;
-            cursor: pointer;
-        }
-
-        .back-button {
-            background: #64748b;
-            margin-right: 8px;
-        }
-
-        .back-button:hover { background: #475569; }
-
-        #otpSection, #repaySuccessSection {
-            display: none;
-            margin-top: 25px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 25px;
-        }
-
-        #otpSection.active, #repaySuccessSection.active { display: block; }
-
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.6);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 200;
-        }
-
-        .modal-overlay.active { display: flex; }
-
-        .modal {
-            background: white;
-            width: 100%;
-            max-width: 480px;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            animation: modalIn .3s ease;
-        }
-
-        .modal-icon {
-            font-size: 45px;
-            margin-bottom: 15px;
-        }
-
-        .modal h2 {
-            color: #063970;
-            margin-bottom: 15px;
-        }
-
-        .modal p {
-            color: #475569;
-            line-height: 1.6;
-            margin-bottom: 22px;
-        }
-
-        @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .success {
-            display: none;
-            text-align: center;
-            padding: 25px;
-            color: #087f5b;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        @media(max-width: 800px) {
-            .services { grid-template-columns: 1fr; }
-            .welcome-content h1 { font-size: 32px; }
-            .radio-group { flex-direction: column; }
-            .info-strip-badge {
-                padding: 0 10px;
-                font-size: 11px;
-            }
-        }
-    </style>
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid #334155;
+      text-align: center;
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+  </style>
 </head>
 <body>
 
-<section id="welcome" aria-label="Welcome screen">
-    <div class="welcome-content">
-        <div class="credit-logo-container">
-            <img src="image_6c64d7.PNG" alt="CRB Kenya Logo">
-        </div>
-        <h1>CRB Kenya</h1>
-        <p>Credit information services by TransUnion Kenya</p>
+  <!-- Header -->
+  <header>
+    <div class="brand" onclick="showView('homeView')">
+      <div class="brand-logo">CRB</div>
+      <span>TransUnion Kenya</span>
     </div>
-</section>
+    <nav>
+      <a href="#" class="active" onclick="showView('homeView'); return false;">Home</a>
+      <a href="#" onclick="showView('reportView'); return false;">Credit Report</a>
+      <a href="#" onclick="showView('repayView'); return false;">Repay Loan</a>
+    </nav>
+  </header>
 
-<header>
-    <h2>CRB Kenya</h2>
-    <span class="demo-label">14 SEPT, 2026</span>
-</header>
+  <main>
+    <!-- Home View -->
+    <div id="homeView" class="view-panel active" style="max-width: 100%; background: none; box-shadow: none; padding: 0; border: none;">
+      <section class="hero">
+        <h1>Credit Bureau & Clearance Services</h1>
+        <p>Check your credit score, manage defaulted loans, and request clearance certificates directly online.</p>
+      </section>
 
-<div class="info-strip-container">
-    <div class="info-strip-badge">Updates</div>
-    <div class="info-strip-wrapper">
-        <div class="info-strip-content">
-            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>CBK Directive:</strong> Citizens are entitled to one free credit report per calendar year.</div>
-            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>System Notice:</strong> Automatic clearance certificate dispatch now active via M-Pesa.</div>
-            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>New Regulations:</strong> Credit repair options updated for defaulted digital mobile loans under KES 5,000.</div>
-            <div class="info-item"><span class="bullet" aria-hidden="true"></span><strong>Support Alert:</strong> Processing times for manual clearance disputes currently take 24–48 hours.</div>
-
-            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>CBK Directive:</strong> Citizens are entitled to one free credit report per calendar year.</div>
-            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>System Notice:</strong> Automatic clearance certificate dispatch now active via M-Pesa.</div>
-            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>New Regulations:</strong> Credit repair options updated for defaulted digital mobile loans under KES 5,000.</div>
-            <div class="info-item" aria-hidden="true"><span class="bullet"></span><strong>Support Alert:</strong> Processing times for manual clearance disputes currently take 24–48 hours.</div>
+      <div class="services-grid">
+        <div class="card">
+          <div>
+            <h3>Credit Report & Score</h3>
+            <p>Access your up-to-date credit file to monitor your standing across licensed Kenyan financial institutions.</p>
+          </div>
+          <button class="btn" onclick="showView('reportView')">Check Report</button>
         </div>
+
+        <div class="card">
+          <div>
+            <h3>Repay Defaulted Loan</h3>
+            <p>Settle outstanding balances with partner digital lenders to update your CRB rating quickly.</p>
+          </div>
+          <button class="btn" onclick="showView('repayView')">Repay Loans</button>
+        </div>
+
+        <div class="card">
+          <div>
+            <h3>Clearance Certificate</h3>
+            <p>Obtain an official CRB Clearance Certificate confirming you have no negative listings.</p>
+          </div>
+          <button class="btn" onclick="showView('reportView')">Get Certificate</button>
+        </div>
+      </div>
+
+      <!-- Auto-sliding Testimonials Section -->
+      <section class="testimonials-section">
+        <h2 class="section-title">What Our Users Say</h2>
+        
+        <div class="testimonial-carousel" id="testimonialCarousel">
+          <!-- Slide 1 -->
+          <div class="testimonial-slide active">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"Getting my credit status took less than 5 minutes. The process was direct and enabled me to rectify a listing issue quickly."</p>
+            <div class="testimonial-author">David Ochieng</div>
+            <div class="testimonial-role">Nairobi</div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="testimonial-slide">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"I was able to clear my outstanding Fuliza loan directly through the portal and update my standing within 24 hours."</p>
+            <div class="testimonial-author">Mercy Wanjiru</div>
+            <div class="testimonial-role">Mombasa</div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="testimonial-slide">
+            <div class="stars">★★★★☆</div>
+            <p class="testimonial-text">"Seamless process for securing my Clearance Certificate required for employment onboarding. Highly recommended."</p>
+            <div class="testimonial-author">Kevin Mutua</div>
+            <div class="testimonial-role">Nakuru</div>
+          </div>
+        </div>
+
+        <!-- Dots -->
+        <div class="carousel-dots" id="carouselDots">
+          <span class="dot active" onclick="goToSlide(0)"></span>
+          <span class="dot" onclick="goToSlide(1)"></span>
+          <span class="dot" onclick="goToSlide(2)"></span>
+        </div>
+      </section>
     </div>
-</div>
 
-<main>
-    <section id="home">
-        <div class="hero">
-            <h1>Welcome to CRB Kenya</h1>
-            <p>Instant access to your CRB status, credit score and personalized financial insights starts here.</p>
+    <!-- Credit Report Form View -->
+    <div id="reportView" class="view-panel">
+      <h2>Check Credit Report</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Enter your details to generate your credit summary.</p>
+      
+      <form onsubmit="event.preventDefault(); alert('Request submitted successfully.');">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" placeholder="John Doe" required>
         </div>
-
-        <div class="services">
-            <div class="service-card">
-                <div class="service-icon" aria-hidden="true">📊</div>
-                <h3>Credit Report &amp; Score</h3>
-                <p>Get your score and know how you are performing in terms of credit repayment.</p>
-                <button type="button" id="btnReport">Continue</button>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon" aria-hidden="true">💳</div>
-                <h3>Repay Defaulted Loan(s)</h3>
-                <p>Settle outstanding defaulted accounts directly with listed digital and financial lenders.</p>
-                <button type="button" id="btnRepay">Continue</button>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon" aria-hidden="true">📜</div>
-                <h3>Clearance Certificate</h3>
-                <p>Get your Clearance Certificate as proof that you do not have outstanding arrears or in default of loan payments.</p>
-                <button type="button" id="btnCertificate">Continue</button>
-            </div>
+        <div class="form-group">
+          <label for="idNumber">National ID / Passport Number</label>
+          <input type="text" id="idNumber" placeholder="12345678" required>
         </div>
-    </section>
-
-    <section id="reportForm" class="form-container" aria-hidden="true">
-        <h2>Credit Report &amp; Score</h2>
-        <p class="form-description">Enter information below.</p>
-
-        <div class="demo-warning">
-            <strong>Note:</strong> Enter accurate details as they appear on your National ID. Your mobile number MUST be registered with your National ID.
+        <div class="form-group">
+          <label for="phone">M-Pesa Phone Number</label>
+          <input type="tel" id="phone" placeholder="0712345678" required>
         </div>
-
-        <form id="creditForm">
-            <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input id="fullName" type="text" placeholder="e.g. John Doe" required>
-            </div>
-
-            <div class="form-group">
-                <label for="demoId">ID Number</label>
-                <input id="demoId" type="text" placeholder="e.g. 12345678" required>
-            </div>
-
-            <div class="form-group">
-                <label for="demoPhone">Mobile Number</label>
-                <input id="demoPhone" type="tel" placeholder="e.g. 0700000000" required>
-            </div>
-
-            <div class="form-group">
-                <label for="demoEmail">Email</label>
-                <input id="demoEmail" type="email" placeholder="demo@example.com" required>
-            </div>
-
-            <button type="button" class="back-button btn-go-home">Back</button>
-            <button type="submit">Submit Request</button>
-        </form>
-
-        <div id="otpSection">
-            <h3>OTP Verification</h3>
-            <p class="form-description">ONLY Enter OTP sent to your mobile number after payment:</p>
-
-            <div class="form-group">
-                <label for="demoOtp">Enter OTP</label>
-                <input id="demoOtp" type="text" inputmode="numeric" maxlength="6" placeholder="123456">
-            </div>
-
-            <button type="button" id="btnVerifyOtp">Verify OTP</button>
-
-            <div id="successMessage" class="success">
-                <h3>✓ Verification Successful. Your credit report and score will be sent within 60 seconds</h3>
-                <p>This is a demonstration only. No real credit report was accessed.</p>
-            </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="john@example.com" required>
         </div>
-    </section>
-
-    <section id="repayForm" class="form-container" aria-hidden="true">
-        <h2>Repay Defaulted Loan(s)</h2>
-        <p class="form-description">Select the financial institution and details of the defaulted account you wish to clear.</p>
-
-        <form id="loanRepayForm">
-            <div class="form-group">
-                <label for="lenderSelect">Select Lender</label>
-                <select id="lenderSelect" required>
-                    <option value="" disabled selected>-- Select Lender / Credit Provider --</option>
-                    <option value="tala">Tala Mobile</option>
-                    <option value="branch">Branch International</option>
-                    <option value="mshwari">M-Shwari / NCBA</option>
-                    <option value="fuliza">Fuliza / Safaricom</option>
-                    <option value="kcb_mpesa">KCB M-Pesa</option>
-                    <option value="zenka">Zenka Finance</option>
-                    <option value="okash">Okash</option>
-                    <option value="equity">Equity Bank (Eazzy Loan)</option>
-                    <option value="coop">Co-operative Bank (MCo-op Cash)</option>
-                    <option value="other">Other Certified Lender</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="accountRef">Account Reference Number</label>
-                <input id="accountRef" type="text" placeholder="e.g. Loan ID or Mobile Number" required>
-            </div>
-
-            <div class="form-group">
-                <label for="repayAmount">Amount to Pay (KES)</label>
-                <input id="repayAmount" type="number" placeholder="e.g. 5000" min="1" required>
-            </div>
-
-            <div class="form-group">
-                <label for="listingDate">CRB Listing Date</label>
-                <input id="listingDate" type="date" required>
-            </div>
-
-            <fieldset class="form-group" style="border:none;">
-                <legend style="font-weight:bold; color:#334155; margin-bottom:7px;">Select Payment Method</legend>
-                <div class="radio-group">
-                    <label class="radio-option">
-                        <input type="radio" name="payMethod" value="mpesa" checked>
-                        <span>📲 M-Pesa STK Push</span>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="payMethod" value="card">
-                        <span>💳 Debit / Credit Card</span>
-                    </label>
-                </div>
-            </fieldset>
-
-            <div id="mpesaFields" class="form-group">
-                <label for="mpesaNumber">M-Pesa Mobile Number</label>
-                <input id="mpesaNumber" type="tel" placeholder="e.g. 0712345678" required>
-            </div>
-
-            <div id="cardFields" class="form-group" style="display: none;">
-                <div class="form-group">
-                    <label for="cardNumber">Card Number</label>
-                    <input id="cardNumber" type="text" placeholder="1234 5678 9101 1121" maxlength="19">
-                </div>
-                <div style="display: flex; gap: 15px;">
-                    <div style="flex: 1;">
-                        <label for="cardExpiry">Expiry Date</label>
-                        <input id="cardExpiry" type="text" placeholder="MM/YY" maxlength="5">
-                    </div>
-                    <div style="flex: 1;">
-                        <label for="cardCvc">CVC/CVV</label>
-                        <input id="cardCvc" type="password" placeholder="123" maxlength="4">
-                    </div>
-                </div>
-            </div>
-
-            <button type="button" class="back-button btn-go-home">Back</button>
-            <button type="submit">Proceed to Pay</button>
-        </form>
-
-        <div id="repaySuccessSection" class="success">
-            <h3>✓ Repayment Processing Initiated</h3>
-            <p>If you selected M-Pesa, check your phone for the STK prompt. Once processed, an update notification will be dispatched to the lender and CRB within 24 hours.</p>
-        </div>
-    </section>
-</main>
-
-<footer>
-    CRB-Kenya &copy; 2026 — TransUnion Credit Report. All rights reserved.
-</footer>
-
-<div id="paymentModal" class="modal-overlay" aria-hidden="true" role="dialog">
-    <div class="modal">
-        <div class="modal-icon" aria-hidden="true">ℹ️</div>
-        <h2>Payment Procedure</h2>
-        <p>
-            To access your report and score, please pay KES 50 to Safaricom paybill 212121 with your ID as account number.
-            <br><br>
-            <strong>ONLY pay using your registered mobile number as provided above.</strong>
-        </p>
-        <button type="button" class="btn-close-payment">Already paid</button>
-        <button type="button" class="btn-close-payment" style="background:#64748b; margin-top:8px;">Close</button>
+        <button type="submit" class="btn">Proceed to Verification</button>
+      </form>
     </div>
-</div>
 
-<div id="certificateModal" class="modal-overlay" aria-hidden="true" role="dialog">
-    <div class="modal">
-        <div class="modal-icon" aria-hidden="true">📜</div>
-        <h2>Clearance Certificate Application</h2>
-        <p>
-            To apply for an official Certificate of Clearance, your credit record must show no non-performing loan accounts.
-            <br><br>
-            A processing fee of <strong>KES 2,200</strong> applies as per Central Bank of Kenya (CBK) guidelines.
-            <br><br>
-            Please pull a fresh Credit Report first to ensure all defaulted loans have been fully settled before proceeding.
-        </p>
-        <button type="button" id="btnCertToGoReport">Check Credit Report First</button>
-        <button type="button" id="btnCertClose" style="background: #64748b; margin-top: 10px;">Close</button>
+    <!-- Loan Repayment Form View -->
+    <div id="repayView" class="view-panel">
+      <h2>Repay Defaulted Loan</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Select your lender and enter payment details.</p>
+
+      <form onsubmit="event.preventDefault(); alert('Payment request sent to phone.');">
+        <div class="form-group">
+          <label for="lender">Select Lender</label>
+          <select id="lender" required>
+            <option value="">-- Choose Lender --</option>
+            <option value="tala">Tala</option>
+            <option value="branch">Branch</option>
+            <option value="fuliza">Fuliza (NCBA)</option>
+            <option value="mshwari">M-Shwari</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="accountNo">National ID / Account No.</label>
+          <input type="text" id="accountNo" placeholder="Enter ID or Account No" required>
+        </div>
+        <div class="form-group">
+          <label for="amount">Amount (KES)</label>
+          <input type="number" id="amount" placeholder="500" required>
+        </div>
+        <button type="submit" class="btn">Initiate Payment</button>
+      </form>
     </div>
-</div>
+  </main>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const home = document.getElementById("home");
-        const reportForm = document.getElementById("reportForm");
-        const repayForm = document.getElementById("repayForm");
-        const creditForm = document.getElementById("creditForm");
-        const loanRepayForm = document.getElementById("loanRepayForm");
-        const paymentModal = document.getElementById("paymentModal");
-        const certificateModal = document.getElementById("certificateModal");
-        const otpSection = document.getElementById("otpSection");
-        const repaySuccessSection = document.getElementById("repaySuccessSection");
-        const mpesaFields = document.getElementById("mpesaFields");
-        const cardFields = document.getElementById("cardFields");
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>CRB Kenya</h4>
+        <p style="font-size: 0.9rem; line-height: 1.5; color: #94a3b8;">Providing reliable credit status checking, loan clearance processing, and credit reporting services across Kenya.</p>
+      </div>
 
-        function hideAllSections() {
-            home.style.display = "none";
-            reportForm.classList.remove("active");
-            reportForm.setAttribute("aria-hidden", "true");
-            repayForm.classList.remove("active");
-            repayForm.setAttribute("aria-hidden", "true");
-        }
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#" onclick="showView('homeView'); return false;">Home</a></li>
+          <li><a href="#" onclick="showView('reportView'); return false;">Check Credit Report</a></li>
+          <li><a href="#" onclick="showView('repayView'); return false;">Repay Defaulted Loans</a></li>
+          <li><a href="#" onclick="showView('reportView'); return false;">Request Clearance Certificate</a></li>
+        </ul>
+      </div>
 
-        function goHome() {
-            reportForm.classList.remove("active");
-            reportForm.setAttribute("aria-hidden", "true");
-            repayForm.classList.remove("active");
-            repayForm.setAttribute("aria-hidden", "true");
-            home.style.display = "block";
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <ul class="contact-info">
+          <li>📍 Delta Corner, Westlands, Nairobi</li>
+          <li>📞 +254 700 000 000</li>
+          <li>✉️ support@crbkenya.co.ke</li>
+          <li>🕒 Mon - Fri: 8:00 AM - 5:00 PM</li>
+        </ul>
+      </div>
+    </div>
 
-        function showReportForm() {
-            hideAllSections();
-            reportForm.classList.add("active");
-            reportForm.removeAttribute("aria-hidden");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
+    <div class="footer-bottom">
+      &copy; 2026 TransUnion CRB Kenya. All Rights Reserved.
+    </div>
+  </footer>
 
-        function showRepayForm() {
-            hideAllSections();
-            repayForm.classList.add("active");
-            repayForm.removeAttribute("aria-hidden");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
+  <script>
+    /* Navigation logic */
+    function showView(viewId) {
+      document.querySelectorAll('.view-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+      document.getElementById(viewId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-        document.getElementById("btnReport").addEventListener("click", showReportForm);
-        document.getElementById("btnRepay").addEventListener("click", showRepayForm);
-        document.getElementById("btnCertificate").addEventListener("click", () => {
-            certificateModal.classList.add("active");
-            certificateModal.removeAttribute("aria-hidden");
-        });
+    /* Testimonial Auto-Sliding Logic */
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const dots = document.querySelectorAll('.dot');
+    let slideInterval;
 
-        document.querySelectorAll(".btn-go-home").forEach(btn => {
-            btn.addEventListener("click", goHome);
-        });
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        dots[i].classList.remove('active');
+      });
+      
+      currentSlide = (index + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+      dots[currentSlide].classList.add('active');
+    }
 
-        document.getElementById("btnCertClose").addEventListener("click", () => {
-            certificateModal.classList.remove("active");
-            certificateModal.setAttribute("aria-hidden", "true");
-        });
+    function nextSlide() {
+      showSlide(currentSlide + 1);
+    }
 
-        document.getElementById("btnCertToGoReport").addEventListener("click", () => {
-            certificateModal.classList.remove("active");
-            certificateModal.setAttribute("aria-hidden", "true");
-            showReportForm();
-        });
+    function goToSlide(index) {
+      showSlide(index);
+      resetTimer();
+    }
 
-        document.querySelectorAll(".btn-close-payment").forEach(btn => {
-            btn.addEventListener("click", () => {
-                paymentModal.classList.remove("active");
-                paymentModal.setAttribute("aria-hidden", "true");
-                otpSection.classList.add("active");
-                otpSection.scrollIntoView({ behavior: "smooth" });
-            });
-        });
+    function startTimer() {
+      slideInterval = setInterval(nextSlide, 4000); // 4-second auto slide
+    }
 
-        document.querySelectorAll('input[name="payMethod"]').forEach(radio => {
-            radio.addEventListener("change", (e) => {
-                if (e.target.value === "mpesa") {
-                    mpesaFields.style.display = "block";
-                    cardFields.style.display = "none";
-                    document.getElementById("mpesaNumber").required = true;
-                    document.getElementById("cardNumber").required = false;
-                    document.getElementById("cardExpiry").required = false;
-                    document.getElementById("cardCvc").required = false;
-                } else {
-                    mpesaFields.style.display = "none";
-                    cardFields.style.display = "block";
-                    document.getElementById("mpesaNumber").required = false;
-                    document.getElementById("cardNumber").required = true;
-                    document.getElementById("cardExpiry").required = true;
-                    document.getElementById("cardCvc").required = true;
-                }
-            });
-        });
+    function resetTimer() {
+      clearInterval(slideInterval);
+      startTimer();
+    }
 
-        creditForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            paymentModal.classList.add("active");
-            paymentModal.removeAttribute("aria-hidden");
-        });
+    // Pause auto-sliding when hovering over testimonials
+    const carouselContainer = document.getElementById('testimonialCarousel');
+    carouselContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+    carouselContainer.addEventListener('mouseleave', startTimer);
 
-        loanRepayForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            repaySuccessSection.classList.add("active");
-            repaySuccessSection.style.display = "block";
-            repaySuccessSection.scrollIntoView({ behavior: "smooth" });
-        });
-
-        document.getElementById("btnVerifyOtp").addEventListener("click", () => {
-            const otp = document.getElementById("demoOtp").value.trim();
-            const success = document.getElementById("successMessage");
-
-            if (otp === "123456") {
-                success.style.display = "block";
-            } else {
-                alert("Incorrect demo OTP. Enter 123456.");
-            }
-        });
-    });
-</script>
+    // Initialize auto-sliding
+    startTimer();
+  </script>
 </body>
 </html>
