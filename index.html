@@ -38,7 +38,6 @@
             animation: scaleIn 1.2s ease;
         }
 
-        /* UPDATED LOGO CONTAINER & ANIMATION */
         .credit-logo-container {
             width: 140px;
             height: 140px;
@@ -251,18 +250,48 @@
             color: #334155;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 13px;
             border: 1px solid #ccd5df;
             border-radius: 8px;
             font-size: 15px;
             outline: none;
+            background: white;
         }
 
-        input:focus {
+        input:focus, select:focus {
             border-color: #087f5b;
             box-shadow: 0 0 0 3px rgba(8,127,91,.1);
+        }
+
+        /* PAYMENT METHOD RADIO OPTIONS */
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .radio-option {
+            flex: 1;
+            border: 1px solid #ccd5df;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .radio-option:hover {
+            border-color: #087f5b;
+            background: #f8fafc;
+        }
+
+        .radio-option input[type="radio"] {
+            width: auto;
+            cursor: pointer;
         }
 
         .back-button {
@@ -274,16 +303,16 @@
             background: #475569;
         }
 
-        /* ---------- OTP ---------- */
+        /* ---------- OTP & PAYMENT SECTIONS ---------- */
 
-        #otpSection {
+        #otpSection, #repaySuccessSection {
             display: none;
             margin-top: 25px;
             border-top: 1px solid #e2e8f0;
             padding-top: 25px;
         }
 
-        #otpSection.active {
+        #otpSection.active, #repaySuccessSection.active {
             display: block;
         }
 
@@ -364,6 +393,10 @@
             .welcome-content h1 {
                 font-size: 32px;
             }
+
+            .radio-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -374,7 +407,6 @@
 <section id="welcome">
     <div class="welcome-content">
         <div class="credit-logo-container">
-            <!-- Ensure image_6c64d7.png is placed in the same directory as this file -->
             <img src="image_6c64d7.PNG" alt="CRB Kenya Logo">
         </div>
         <h1>CRB-Kenya</h1>
@@ -414,10 +446,9 @@
                 <div class="service-icon">💳</div>
                 <h3>Repay Defaulted Loan(s)</h3>
                 <p>
-                    Demonstration of a loan repayment
-                    service workflow.
+                    Settle outstanding defaulted accounts directly with listed digital and financial lenders.
                 </p>
-                <button onclick="demoMessage()">
+                <button onclick="showRepayForm()">
                     Continue
                 </button>
             </div>
@@ -454,89 +485,140 @@
 
             <div class="form-group">
                 <label for="fullName">Full Name</label>
-                <input
-                    id="fullName"
-                    type="text"
-                    placeholder="e.g. John Doe"
-                    required
-                >
+                <input id="fullName" type="text" placeholder="e.g. John Doe" required>
             </div>
 
             <div class="form-group">
                 <label for="demoId">ID Number</label>
-                <input
-                    id="demoId"
-                    type="text"
-                    placeholder="e.g. 12345678"
-                    required
-                >
+                <input id="demoId" type="text" placeholder="e.g. 12345678" required>
             </div>
 
             <div class="form-group">
                 <label for="demoPhone">Mobile Number</label>
-                <input
-                    id="demoPhone"
-                    type="text"
-                    placeholder="e.g. 0700000000"
-                    required
-                >
+                <input id="demoPhone" type="text" placeholder="e.g. 0700000000" required>
             </div>
 
             <div class="form-group">
                 <label for="demoEmail">Email</label>
-                <input
-                    id="demoEmail"
-                    type="email"
-                    placeholder="demo@example.com"
-                    required
-                >
+                <input id="demoEmail" type="email" placeholder="demo@example.com" required>
             </div>
 
-            <button type="button" class="back-button"
-                    onclick="goHome()">
-                Back
-            </button>
-
-            <button type="submit">
-                Submit Request
-            </button>
+            <button type="button" class="back-button" onclick="goHome()">Back</button>
+            <button type="submit">Submit Request</button>
 
         </form>
 
         <!-- OTP DEMO -->
         <div id="otpSection">
-
             <h3>OTP Verification</h3>
-
             <p class="form-description">
                 ONLY Enter OTP sent to your mobile number after payment:
-                <strong></strong>
             </p>
 
             <div class="form-group">
                 <label for="demoOtp">Enter OTP</label>
-
-                <input
-                    id="demoOtp"
-                    type="text"
-                    inputmode="numeric"
-                    maxlength="6"
-                    placeholder="123456"
-                >
+                <input id="demoOtp" type="text" inputmode="numeric" maxlength="6" placeholder="123456">
             </div>
 
-            <button onclick="verifyDemoOtp()">
-                Verify  OTP
-            </button>
+            <button onclick="verifyDemoOtp()">Verify OTP</button>
 
             <div id="successMessage" class="success">
                 <h3>✓ Verification Successful. Your credit report and score will be sent within 60 seconds</h3>
-                <p>
-                    This is a demonstration only. No real credit
-                    report was accessed.
-                </p>
+                <p>This is a demonstration only. No real credit report was accessed.</p>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- REPAY DEFAULTED LOAN FORM -->
+    <section id="repayForm" class="form-container">
+
+        <h2>Repay Defaulted Loan(s)</h2>
+
+        <p class="form-description">
+            Select the financial institution and details of the defaulted account you wish to clear.
+        </p>
+
+        <form id="loanRepayForm">
+
+            <div class="form-group">
+                <label for="lenderSelect">Select Lender</label>
+                <select id="lenderSelect" required>
+                    <option value="" disabled selected>-- Select Lender / Credit Provider --</option>
+                    <option value="tala">Tala Mobile</option>
+                    <option value="branch">Branch International</option>
+                    <option value="mshwari">M-Shwari / NCBA</option>
+                    <option value="fuliza">Fuliza / Safaricom</option>
+                    <option value="kcb_mpesa">KCB M-Pesa</option>
+                    <option value="zenka">Zenka Finance</option>
+                    <option value="okash">Okash</option>
+                    <option value="equity">Equity Bank (Eazzy Loan)</option>
+                    <option value="coop">Co-operative Bank (MCo-op Cash)</option>
+                    <option value="other">Other Certified Lender</option>
+                </select>
             </div>
 
+            <div class="form-group">
+                <label for="accountRef">Account Reference Number</label>
+                <input id="accountRef" type="text" placeholder="e.g. Loan ID or Mobile Number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="repayAmount">Amount to Pay (KES)</label>
+                <input id="repayAmount" type="number" placeholder="e.g. 5000" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="listingDate">CRB Listing Date</label>
+                <input id="listingDate" type="date" required>
+            </div>
+
+            <div class="form-group">
+                <label>Select Payment Method</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="payMethod" value="mpesa" checked onclick="togglePaymentFields('mpesa')">
+                        <span>📲 M-Pesa STK Push</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="payMethod" value="card" onclick="togglePaymentFields('card')">
+                        <span>💳 Debit / Credit Card</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Dynamic M-Pesa Input -->
+            <div id="mpesaFields" class="form-group">
+                <label for="mpesaNumber">M-Pesa Mobile Number</label>
+                <input id="mpesaNumber" type="text" placeholder="e.g. 0712345678">
+            </div>
+
+            <!-- Dynamic Card Inputs -->
+            <div id="cardFields" class="form-group" style="display: none;">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input id="cardNumber" type="text" placeholder="1234 5678 9101 1121" maxlength="19">
+                </div>
+                <div style="display: flex; gap: 15px;">
+                    <div style="flex: 1;">
+                        <label for="cardExpiry">Expiry Date</label>
+                        <input id="cardExpiry" type="text" placeholder="MM/YY" maxlength="5">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="cardCvc">CVC/CVV</label>
+                        <input id="cardCvc" type="password" placeholder="123" maxlength="4">
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="back-button" onclick="goHome()">Back</button>
+            <button type="submit">Proceed to Pay</button>
+
+        </form>
+
+        <div id="repaySuccessSection" class="success">
+            <h3>✓ Repayment Processing Initiated</h3>
+            <p>If you selected M-Pesa, check your phone for the STK prompt. Once processed, an update notification will be dispatched to the lender and CRB within 24 hours.</p>
         </div>
 
     </section>
@@ -550,42 +632,24 @@
 
 <!-- GENERAL PAYMENT INFORMATION MODAL -->
 <div id="paymentModal" class="modal-overlay">
-
     <div class="modal">
-
         <div class="modal-icon">ℹ️</div>
-
         <h2>Payment Procedure</h2>
-
         <p>
             To access your report and score, please pay KES 50 to Safaricom paybill 212121 with your ID as account number.
             <br><br>
-            <strong>
-                ONLY pay using your registered mobile number as provided above.
-            </strong>
+            <strong>ONLY pay using your registered mobile number as provided above.</strong>
         </p>
-
-        <button onclick="closeModal()">
-            Already paid
-        </button>
-
-        <button onclick="closeModal()">
-            Close
-        </button>
-
+        <button onclick="closeModal()">Already paid</button>
+        <button onclick="closeModal()">Close</button>
     </div>
-
 </div>
 
 <!-- CLEARANCE CERTIFICATE SPECIFIC MODAL -->
 <div id="certificateModal" class="modal-overlay">
-
     <div class="modal">
-
         <div class="modal-icon">📜</div>
-
         <h2>Clearance Certificate Application</h2>
-
         <p>
             To apply for an official Certificate of Clearance, your credit record must show no non-performing loan accounts.
             <br><br>
@@ -593,17 +657,9 @@
             <br><br>
             Please pull a fresh Credit Report first to ensure all defaulted loans have been fully settled before proceeding.
         </p>
-
-        <button onclick="closeCertModalAndGoReport()">
-            Check Credit Report First
-        </button>
-
-        <button onclick="closeCertModal()" style="background: #64748b; margin-top: 10px;">
-            Close
-        </button>
-
+        <button onclick="closeCertModalAndGoReport()">Check Credit Report First</button>
+        <button onclick="closeCertModal()" style="background: #64748b; margin-top: 10px;">Close</button>
     </div>
-
 </div>
 
 
@@ -611,31 +667,37 @@
 
     const home = document.getElementById("home");
     const reportForm = document.getElementById("reportForm");
+    const repayForm = document.getElementById("repayForm");
     const creditForm = document.getElementById("creditForm");
+    const loanRepayForm = document.getElementById("loanRepayForm");
     const paymentModal = document.getElementById("paymentModal");
     const certificateModal = document.getElementById("certificateModal");
     const otpSection = document.getElementById("otpSection");
+    const repaySuccessSection = document.getElementById("repaySuccessSection");
 
     function showReportForm() {
-        home.style.display = "none";
+        hideAllSections();
         reportForm.classList.add("active");
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showRepayForm() {
+        hideAllSections();
+        repayForm.classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function hideAllSections() {
+        home.style.display = "none";
+        reportForm.classList.remove("active");
+        repayForm.classList.remove("active");
     }
 
     function goHome() {
         reportForm.classList.remove("active");
+        repayForm.classList.remove("active");
         home.style.display = "block";
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }
-
-    function demoMessage() {
-        paymentModal.classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function showCertificateMessage() {
@@ -653,17 +715,32 @@
 
     function closeModal() {
         paymentModal.classList.remove("active");
-
         otpSection.classList.add("active");
+        otpSection.scrollIntoView({ behavior: "smooth" });
+    }
 
-        otpSection.scrollIntoView({
-            behavior: "smooth"
-        });
+    function togglePaymentFields(method) {
+        const mpesaFields = document.getElementById("mpesaFields");
+        const cardFields = document.getElementById("cardFields");
+
+        if (method === 'mpesa') {
+            mpesaFields.style.display = 'block';
+            cardFields.style.display = 'none';
+        } else {
+            mpesaFields.style.display = 'none';
+            cardFields.style.display = 'block';
+        }
     }
 
     creditForm.addEventListener("submit", function(event) {
         event.preventDefault();
         paymentModal.classList.add("active");
+    });
+
+    loanRepayForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        repaySuccessSection.classList.add("active");
+        repaySuccessSection.scrollIntoView({ behavior: "smooth" });
     });
 
     function verifyDemoOtp() {
