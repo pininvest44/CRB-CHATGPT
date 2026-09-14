@@ -38,17 +38,26 @@
             animation: scaleIn 1.2s ease;
         }
 
-        .credit-icon {
-            width: 90px;
-            height: 90px;
+        /* UPDATED LOGO CONTAINER & ANIMATION */
+        .credit-logo-container {
+            width: 140px;
+            height: 140px;
+            background: #ffffff;
             border-radius: 50%;
             margin: 0 auto 25px;
-            border: 5px solid rgba(255,255,255,.8);
+            border: 4px solid rgba(255, 255, 255, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 38px;
-            animation: pulse 1.5s infinite;
+            padding: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: pulse 1.8s infinite ease-in-out;
+        }
+
+        .credit-logo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         .welcome-content h1 {
@@ -64,12 +73,12 @@
         @keyframes pulse {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255,255,255,.3);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
             }
 
             50% {
-                transform: scale(1.08);
-                box-shadow: 0 0 0 20px rgba(255,255,255,0);
+                transform: scale(1.06);
+                box-shadow: 0 0 0 22px rgba(255, 255, 255, 0);
             }
         }
 
@@ -364,7 +373,10 @@
 <!-- WELCOME ANIMATION -->
 <section id="welcome">
     <div class="welcome-content">
-        <div class="credit-icon">✓</div>
+        <div class="credit-logo-container">
+            <!-- Ensure image_6c64d7.png is placed in the same directory as this file -->
+            <img src="image_6c64d7.png" alt="CRB Kenya Logo">
+        </div>
         <h1>CRB-Kenya</h1>
         <p>Credit information services</p>
     </div>
@@ -416,7 +428,6 @@
                 <p>
                     Get your Clearance Certificate as proof that you do not have outstanding arrears or in default of loan payments.
                 </p>
-                <!-- Updated click action for Clearance Certificate -->
                 <button onclick="showCertificateMessage()">
                     Continue
                 </button>
