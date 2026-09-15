@@ -562,6 +562,95 @@
         margin: 0 8px;
     }
 }
+        /* Testimonials Section */
+.testimonials-section {
+    background: #ffffff;
+    padding: 60px 20px;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.testimonials-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonials-header h2 {
+    color: #063970;
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.testimonials-header p {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.testimonial-slider {
+    display: flex;
+    transition: transform 0.6s ease-in-out;
+    width: 100%;
+}
+
+.testimonial-card {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.rating-stars {
+    color: #ffc107;
+    font-size: 20px;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.testimonial-text {
+    font-size: 16px;
+    color: #334155;
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.author-info h4 {
+    color: #063970;
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.author-info span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 25px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.dot.active {
+    background: #087f5b;
+    transform: scale(1.2);
+}
     </style>
 </head>
 <body>
@@ -763,6 +852,54 @@
         </div>
     </section>
 </main>
+    <!-- Testimonials Section -->
+<section class="testimonials-section" aria-label="Customer Testimonials">
+    <div class="testimonials-container">
+        <div class="testimonials-header">
+            <h2>What Our Users Say</h2>
+            <p>Feedback from individuals who accessed their credit summaries.</p>
+        </div>
+
+        <div class="testimonial-slider" id="testimonialSlider">
+            <!-- Slide 1 -->
+            <div class="testimonial-card">
+                <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                <p class="testimonial-text">"Getting my credit report status was straightforward. The notice about the free annual CBK report was helpful."</p>
+                <div class="author-info">
+                    <h4>David K.</h4>
+                    <span>Nairobi</span>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="testimonial-card">
+                <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                <p class="testimonial-text">"Cleared an old outstanding loan listing smoothly. Great guidance throughout the application flow."</p>
+                <div class="author-info">
+                    <h4>Mary W.</h4>
+                    <span>Mombasa</span>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="testimonial-card">
+                <div class="rating-stars" aria-label="4 out of 5 stars">★★★★☆</div>
+                <p class="testimonial-text">"Simple layout and easy to navigate on mobile devices. Fast verification processing."</p>
+                <div class="author-info">
+                    <h4>Peter M.</h4>
+                    <span>Nakuru</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination Dots -->
+        <div class="slider-dots" id="sliderDots">
+            <span class="dot active" data-slide="0" aria-label="Slide 1"></span>
+            <span class="dot" data-slide="1" aria-label="Slide 2"></span>
+            <span class="dot" data-slide="2" aria-label="Slide 3"></span>
+        </div>
+    </div>
+</section>
 <footer class="site-footer">
     <div class="footer-container">
         <!-- Column 1: About -->
@@ -962,6 +1099,38 @@
             }
         });
     });
+    // Testimonial Auto-Slider Logic
+const slider = document.getElementById('testimonialSlider');
+const dots = document.querySelectorAll('.dot');
+let currentSlide = 0;
+const totalSlides = dots.length;
+const slideInterval = 4000; // 4 seconds
+
+function goToSlide(index) {
+    currentSlide = index;
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+    });
+}
+
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    goToSlide(currentSlide);
+}
+
+// Start Auto Slide
+let autoSlideTimer = setInterval(nextSlide, slideInterval);
+
+// Manual Dot Navigation
+dots.forEach(dot => {
+    dot.addEventListener('click', (e) => {
+        clearInterval(autoSlideTimer);
+        const slideIndex = parseInt(e.target.getAttribute('data-slide'));
+        goToSlide(slideIndex);
+        autoSlideTimer = setInterval(nextSlide, slideInterval);
+    });
+});
 </script>
 </body>
 </html>
