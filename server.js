@@ -5,11 +5,17 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware - Enable CORS for all origins
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Environmental Variables
+// Health check endpoint (useful to ping server)
+app.get('/', (req, res) => {
+  res.send('CRB SMS Service is live.');
+});
+
+// Environment Variables
 const ADMIN_PHONE_NUMBER = process.env.ADMIN_PHONE_NUMBER || '+254710986455';
 const MOBITECH_API_KEY = process.env.MOBITECH_API_KEY || '76de8c373d39d680187c4aed169d1419ccb803adc34ad017';
 const MOBITECH_SENDER_NAME = process.env.MOBITECH_SENDER_NAME || 'MOBI-TECH';
@@ -24,14 +30,12 @@ app.post('/api/submit-credit-report', async (req, res) => {
     if (!fullName || !nationalId || !phoneNumber) {
       return res.status(400).json({ 
         success: false, 
-        message: 'Name, ID, and Phone Number are required.' 
+        message: 'Name, ID Number, and Mobile Number are required.' 
       });
     }
 
-    // Format the message body sent to the admin phone
-    const smsMessage = `New CRB Credit Report Request:\nName: ${fullName}\nID No: ${nationalId}\nClient Phone: ${phoneNumber}\nEmail: ${email || 'N/A'}`;
+    const smsMessage = `New CRB Request:\nName: ${fullName}\nID: ${nationalId}\nPhone: ${phoneNumber}\nEmail: ${email || 'N/A'}`;
 
-    // Payload formatted for Mobitech API
     const smsPayload = {
       mobile: ADMIN_PHONE_NUMBER,
       response_type: 'json',
@@ -40,30 +44,33 @@ app.post('/api/submit-credit-report', async (req, res) => {
       message: smsMessage
     };
 
+    // Axios post request with 10s timeout
     const smsResponse = await axios.post(MOBITECH_ENDPOINT, smsPayload, {
       headers: {
         'h_api_key': MOBITECH_API_KEY,
         'Content-Type': 'application/json'
-      }
+      },
+      timeout: 10000 
     });
 
-    console.log('Mobitech API Response:', smsResponse.data);
+    console.log('Mobitech API Success:', smsResponse.data);
 
     return res.status(200).json({
       success: true,
-      message: 'Request processed and SMS notification dispatched.',
+      message: 'Request submitted successfully!',
       data: smsResponse.data
     });
 
   } catch (error) {
-    console.error('API or Server Error:', error.response?.data || error.message);
+    console.error('Error Details:', error.response?.data || error.message);
+    
     return res.status(500).json({
       success: false,
-      message: 'Failed to process request and dispatch SMS.'
+      message: error.response?.data?.message || 'Failed to send SMS via Mobitech API.'
     });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server executing on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
