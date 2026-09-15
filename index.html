@@ -750,19 +750,29 @@
             <button type="button" class="back-button btn-go-home">Back</button>
             <button type="submit">Submit Request</button>
         </form>
-        <script>
+<script>
   const form = document.getElementById('creditForm');
-  // Update this URL with your live Render backend URL after deployment
+  // Update this to your live Render backend URL
   const BACKEND_URL = 'https://crb-chatgpt.onrender.com';
 
+  // 1. Send a background ping on page load to wake up Render from cold sleep
+  window.addEventListener('DOMContentLoaded', () => {
+    fetch(`${BACKEND_URL}/`)
+      .then(() => console.log('Render server awakened.'))
+      .catch((err) => console.warn('Server wake-up ping failed:', err));
+  });
+
+  // 2. Handle form submit event
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerText;
+    
     submitBtn.disabled = true;
-    submitBtn.innerText = 'Submitting...';
+    submitBtn.innerText = 'Sending Request...';
 
-    // Map your exact HTML input IDs
+    // Extract input values matching your HTML IDs
     const formData = {
       fullName: document.getElementById('fullName').value.trim(),
       nationalId: document.getElementById('demoId').value.trim(),
@@ -771,26 +781,31 @@
     };
 
     try {
-      const response = await fetch(BACKEND_URL, {
+      const response = await fetch(`${BACKEND_URL}/api/submit-credit-report`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json' 
+        },
         body: JSON.stringify(formData)
       });
 
       const data = await response.json();
 
-      if (data.success) {
-        alert('Your credit report request has been submitted successfully!');
+      if (response.ok && data.success) {
+        alert('✅ Success: ' + (data.message || 'Your request has been submitted successfully!'));
         form.reset();
       } else {
-        alert('Submission failed: ' + data.message);
+        // Detailed error returned by server or Mobitech API
+        const errorMessage = data.message || 'Server encountered an error processing your request.';
+        alert('⚠️ Submission Failed: ' + errorMessage);
       }
+
     } catch (err) {
-      alert('An error occurred while submitting your request.');
-      console.error('Submission Error:', err);
+      console.error('Fetch error:', err);
+      alert('❌ Connection Error: Unable to reach the server. If this is the first submission, please wait 30 seconds for the server to wake up and try again.');
     } finally {
       submitBtn.disabled = false;
-      submitBtn.innerText = 'Submit Request';
+      submitBtn.innerText = originalBtnText;
     }
   });
 </script>
