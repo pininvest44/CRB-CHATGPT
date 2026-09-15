@@ -1,5 +1,5 @@
 {
-  "name": "crb-sms-notifier",
+  "name": "crb-sms-service",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
