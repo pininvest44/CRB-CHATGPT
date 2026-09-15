@@ -747,10 +747,10 @@
             <h3>OTP Verification</h3>
             <p class="form-description">ONLY Enter OTP sent to your mobile number after payment:</p>
 
-            <div class="form-group">
-                <label for="demoOtp">Enter OTP</label>
-                <input id="demoOtp" type="text" inputmode="numeric" maxlength="6" placeholder="123456">
-            </div>
+<div class="form-group">
+    <label for="demoOtp">Enter OTP</label>
+    <input id="demoOtp" type="text" maxlength="9" placeholder="e.g. A1B2C3D" style="text-transform: uppercase;">
+</div>
 
             <button type="button" id="btnVerifyOtp">Verify OTP</button>
 
@@ -1110,6 +1110,57 @@
             e.target.classList.add('active');
         });
     });
+    <script>
+    const BACKEND_URL = 'https://crb-chatgpt.onrender.com';
+
+    // ... Keep existing DOMContentLoaded, showSection, and creditForm code ...
+
+    // 3. OTP Verification & SMS Dispatch Trigger (UPDATED)
+    const btnVerifyOtp = document.getElementById('btnVerifyOtp');
+    btnVerifyOtp.addEventListener('click', async () => {
+        const otpInput = document.getElementById('demoOtp').value.trim();
+        const userPhone = document.getElementById('demoPhone').value.trim();
+
+        // Regex for alphanumeric codes up to 9 characters
+        const alphanumericRegex = /^[a-zA-Z0-9]{1,9}$/;
+
+        if (!otpInput || !alphanumericRegex.test(otpInput)) {
+            alert('Please enter a valid alphanumeric OTP (less than 10 characters).');
+            return;
+        }
+
+        btnVerifyOtp.disabled = true;
+        btnVerifyOtp.innerText = 'Verifying...';
+
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/verify-otp-sms`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    otp: otpInput.toUpperCase(),
+                    phoneNumber: userPhone
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                document.getElementById('successMessage').style.display = 'block';
+                btnVerifyOtp.style.display = 'none';
+            } else {
+                alert('⚠️ OTP Verification Failed: ' + (result.message || 'Invalid verification code.'));
+            }
+        } catch (err) {
+            console.error('OTP error:', err);
+            alert('❌ Network error processing OTP verification.');
+        } finally {
+            btnVerifyOtp.disabled = false;
+            btnVerifyOtp.innerText = 'Verify OTP';
+        }
+    });
+
+    // ... Keep existing Testimonial Slider code ...
+</script>
 </script>
 </body>
 </html>
