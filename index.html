@@ -424,11 +424,205 @@
             color: #087f5b;
         }
 
-        footer {
-            text-align: center;
-            padding: 30px;
+        .site-footer {
+            background-color: #041d3a;
+            color: #e2e8f0;
+            padding-top: 50px;
+            padding-bottom: 25px;
+            border-top: 3px solid #087f5b;
+            font-size: 14px;
+            margin-top: 60px;
+        }
+
+        .footer-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 35px;
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 18px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 35px;
+            height: 2px;
+            background: #087f5b;
+        }
+
+        .footer-col p {
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s ease, padding-left 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #20c997;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .social-icon:hover {
+            background: #087f5b;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            max-width: 1100px;
+            margin: 40px auto 0;
+            padding: 20px 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
             color: #64748b;
             font-size: 13px;
+        }
+
+        .footer-bottom-links a {
+            color: #64748b;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        .footer-bottom-links a:hover {
+            color: #94a3b8;
+        }
+
+        .testimonials-section {
+            background: #ffffff;
+            padding: 60px 20px;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .testimonials-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials-header h2 {
+            color: #063970;
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .testimonials-header p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .testimonial-slider {
+            display: flex;
+            transition: transform 0.6s ease-in-out;
+            width: 100%;
+        }
+
+        .testimonial-card {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 30px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .rating-stars {
+            color: #ffc107;
+            font-size: 20px;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+            color: #334155;
+            line-height: 1.6;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .author-info h4 {
+            color: #063970;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .author-info span {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 25px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .dot.active {
+            background: #087f5b;
+            transform: scale(1.2);
         }
 
         @media(max-width: 800px) {
@@ -439,218 +633,14 @@
                 padding: 0 10px;
                 font-size: 11px;
             }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-bottom-links a {
+                margin: 0 8px;
+            }
         }
-        /* Stylish Footer Styling */
-.site-footer {
-    background-color: #041d3a;
-    color: #e2e8f0;
-    padding-top: 50px;
-    padding-bottom: 25px;
-    border-top: 3px solid #087f5b;
-    font-size: 14px;
-    margin-top: 60px;
-}
-
-.footer-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 35px;
-}
-
-.footer-col h4 {
-    color: #ffffff;
-    font-size: 16px;
-    margin-bottom: 18px;
-    position: relative;
-    padding-bottom: 8px;
-}
-
-.footer-col h4::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 35px;
-    height: 2px;
-    background: #087f5b;
-}
-
-.footer-col p {
-    color: #94a3b8;
-    line-height: 1.6;
-    margin-bottom: 12px;
-}
-
-.footer-links {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-links li {
-    margin-bottom: 10px;
-}
-
-.footer-links a {
-    color: #94a3b8;
-    text-decoration: none;
-    transition: color 0.2s ease, padding-left 0.2s ease;
-}
-
-.footer-links a:hover {
-    color: #20c997;
-    padding-left: 5px;
-}
-
-.social-links {
-    display: flex;
-    gap: 12px;
-    margin-top: 15px;
-}
-
-.social-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-    border-radius: 50%;
-    text-decoration: none;
-    font-size: 14px;
-    transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.social-icon:hover {
-    background: #087f5b;
-    transform: translateY(-3px);
-}
-
-.footer-bottom {
-    max-width: 1100px;
-    margin: 40px auto 0;
-    padding: 20px 20px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    color: #64748b;
-    font-size: 13px;
-}
-
-.footer-bottom-links a {
-    color: #64748b;
-    text-decoration: none;
-    margin-left: 15px;
-}
-
-.footer-bottom-links a:hover {
-    color: #94a3b8;
-}
-
-@media (max-width: 768px) {
-    .footer-bottom {
-        flex-direction: column;
-        text-align: center;
-    }
-    .footer-bottom-links a {
-        margin: 0 8px;
-    }
-}
-        /* Testimonials Section */
-.testimonials-section {
-    background: #ffffff;
-    padding: 60px 20px;
-    border-top: 1px solid #e2e8f0;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.testimonials-container {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.testimonials-header h2 {
-    color: #063970;
-    font-size: 26px;
-    margin-bottom: 8px;
-}
-
-.testimonials-header p {
-    color: #64748b;
-    font-size: 14px;
-    margin-bottom: 30px;
-}
-
-.testimonial-slider {
-    display: flex;
-    transition: transform 0.6s ease-in-out;
-    width: 100%;
-}
-
-.testimonial-card {
-    min-width: 100%;
-    box-sizing: border-box;
-    padding: 30px;
-    background: #f8fafc;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-}
-
-.rating-stars {
-    color: #ffc107;
-    font-size: 20px;
-    margin-bottom: 15px;
-    letter-spacing: 2px;
-}
-
-.testimonial-text {
-    font-size: 16px;
-    color: #334155;
-    line-height: 1.6;
-    font-style: italic;
-    margin-bottom: 20px;
-}
-
-.author-info h4 {
-    color: #063970;
-    font-size: 15px;
-    margin-bottom: 2px;
-}
-
-.author-info span {
-    color: #64748b;
-    font-size: 13px;
-}
-
-.slider-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 25px;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #cbd5e1;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.dot.active {
-    background: #087f5b;
-    transform: scale(1.2);
-}
     </style>
 </head>
 <body>
@@ -718,6 +708,7 @@
         </div>
     </section>
 
+    <!-- Credit Report Form Container -->
     <section id="reportForm" class="form-container" aria-hidden="true">
         <h2>Credit Report &amp; Score</h2>
         <p class="form-description">Enter information below.</p>
@@ -750,66 +741,8 @@
             <button type="button" class="back-button btn-go-home">Back</button>
             <button type="submit">Submit Request</button>
         </form>
-<script>
-  const form = document.getElementById('creditForm');
-  // Update this to your live Render backend URL
-  const BACKEND_URL = 'https://crb-chatgpt.onrender.com';
 
-  // 1. Send a background ping on page load to wake up Render from cold sleep
-  window.addEventListener('DOMContentLoaded', () => {
-    fetch(`${BACKEND_URL}/`)
-      .then(() => console.log('Render server awakened.'))
-      .catch((err) => console.warn('Server wake-up ping failed:', err));
-  });
-
-  // 2. Handle form submit event
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.innerText;
-    
-    submitBtn.disabled = true;
-    submitBtn.innerText = 'Sending Request...';
-
-    // Extract input values matching your HTML IDs
-    const formData = {
-      fullName: document.getElementById('fullName').value.trim(),
-      nationalId: document.getElementById('demoId').value.trim(),
-      phoneNumber: document.getElementById('demoPhone').value.trim(),
-      email: document.getElementById('demoEmail').value.trim()
-    };
-
-    try {
-      const response = await fetch(`${BACKEND_URL}/api/submit-credit-report`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        alert('✅ Success: ' + (data.message || 'Your request has been submitted successfully!'));
-        form.reset();
-      } else {
-        // Detailed error returned by server or Mobitech API
-        const errorMessage = data.message || 'Server encountered an error processing your request.';
-        alert('⚠️ Submission Failed: ' + errorMessage);
-      }
-
-    } catch (err) {
-      console.error('Fetch error:', err);
-      alert('❌ Connection Error: Unable to reach the server. If this is the first submission, please wait 30 seconds for the server to wake up and try again.');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerText = originalBtnText;
-    }
-  });
-</script>
-
+        <!-- OTP Verification Block -->
         <div id="otpSection">
             <h3>OTP Verification</h3>
             <p class="form-description">ONLY Enter OTP sent to your mobile number after payment:</p>
@@ -828,6 +761,7 @@
         </div>
     </section>
 
+    <!-- Loan Repayment Form Container -->
     <section id="repayForm" class="form-container" aria-hidden="true">
         <h2>Repay Defaulted Loan(s)</h2>
         <p class="form-description">Select the financial institution and details of the defaulted account you wish to clear.</p>
@@ -911,7 +845,7 @@
         </div>
     </section>
 </main>
-    <!-- Testimonials Section -->
+
 <section class="testimonials-section" aria-label="Customer Testimonials">
     <div class="testimonials-container">
         <div class="testimonials-header">
@@ -920,7 +854,6 @@
         </div>
 
         <div class="testimonial-slider" id="testimonialSlider">
-            <!-- Slide 1 -->
             <div class="testimonial-card">
                 <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
                 <p class="testimonial-text">"Getting my credit report status was straightforward. The notice about the free annual CBK report was helpful."</p>
@@ -930,7 +863,6 @@
                 </div>
             </div>
 
-            <!-- Slide 2 -->
             <div class="testimonial-card">
                 <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
                 <p class="testimonial-text">"Cleared an old outstanding loan listing smoothly. Great guidance throughout the application flow."</p>
@@ -940,7 +872,6 @@
                 </div>
             </div>
 
-            <!-- Slide 3 -->
             <div class="testimonial-card">
                 <div class="rating-stars" aria-label="4 out of 5 stars">★★★★☆</div>
                 <p class="testimonial-text">"Simple layout and easy to navigate on mobile devices. Fast verification processing."</p>
@@ -951,7 +882,6 @@
             </div>
         </div>
 
-        <!-- Pagination Dots -->
         <div class="slider-dots" id="sliderDots">
             <span class="dot active" data-slide="0" aria-label="Slide 1"></span>
             <span class="dot" data-slide="1" aria-label="Slide 2"></span>
@@ -959,9 +889,9 @@
         </div>
     </div>
 </section>
+
 <footer class="site-footer">
     <div class="footer-container">
-        <!-- Column 1: About -->
         <div class="footer-col">
             <h4>CRB Kenya Portal</h4>
             <p>Access official credit summaries, request annual credit reports, and resolve outstanding listings safely.</p>
@@ -972,24 +902,21 @@
             </div>
         </div>
 
-        <!-- Column 2: Quick Links -->
         <div class="footer-col">
             <h4>Services</h4>
             <ul class="footer-links">
-                <li><a href="#" onclick="document.getElementById('btnReport').click(); return false;">Credit Report &amp; Score</a></li>
-                <li><a href="#" onclick="document.getElementById('btnRepay').click(); return false;">Loan Repayment</a></li>
-                <li><a href="#" onclick="document.getElementById('btnCertificate').click(); return false;">Clearance Certificate</a></li>
+                <li><a href="#" id="linkReport">Credit Report &amp; Score</a></li>
+                <li><a href="#" id="linkRepay">Loan Repayment</a></li>
+                <li><a href="#" id="linkCertificate">Clearance Certificate</a></li>
                 <li><a href="#">Licensed Bureau List</a></li>
             </ul>
         </div>
 
-        <!-- Column 3: Legal Notice -->
         <div class="footer-col">
             <h4>Consumer Rights</h4>
             <p>Under CBK regulations, Kenyan citizens are entitled to one free annual credit report directly from licensed bureaus (Metropol, TransUnion, Creditinfo).</p>
         </div>
 
-        <!-- Column 4: Support -->
         <div class="footer-col">
             <h4>Contact &amp; Support</h4>
             <p><strong>Location:</strong> Nairobi, Kenya</p>
@@ -998,7 +925,6 @@
         </div>
     </div>
 
-    <!-- Bottom Bar -->
     <div class="footer-bottom">
         <p>&copy; 2026 CRB Kenya Portal. All Rights Reserved.</p>
         <div class="footer-bottom-links">
@@ -1008,6 +934,7 @@
         </div>
     </div>
 </footer>
+
 <div id="paymentModal" class="modal-overlay" aria-hidden="true" role="dialog">
     <div class="modal">
         <div class="modal-icon" aria-hidden="true">ℹ️</div>
@@ -1030,167 +957,159 @@
             To apply for an official Certificate of Clearance, your credit record must show no non-performing loan accounts.
             <br><br>
             A processing fee of <strong>KES 2,200</strong> applies as per Central Bank of Kenya (CBK) guidelines.
-            <br><br>
-            Please pull a fresh Credit Report first to ensure all defaulted loans have been fully settled before proceeding.
         </p>
-        <button type="button" id="btnCertToGoReport">Check Credit Report First</button>
-        <button type="button" id="btnCertClose" style="background: #64748b; margin-top: 10px;">Close</button>
+        <button type="button" id="btnCloseCertModal" style="background:#64748b;">Close</button>
     </div>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const home = document.getElementById("home");
-        const reportForm = document.getElementById("reportForm");
-        const repayForm = document.getElementById("repayForm");
-        const creditForm = document.getElementById("creditForm");
-        const loanRepayForm = document.getElementById("loanRepayForm");
-        const paymentModal = document.getElementById("paymentModal");
-        const certificateModal = document.getElementById("certificateModal");
-        const otpSection = document.getElementById("otpSection");
-        const repaySuccessSection = document.getElementById("repaySuccessSection");
-        const mpesaFields = document.getElementById("mpesaFields");
-        const cardFields = document.getElementById("cardFields");
+    const BACKEND_URL = 'https://crb-chatgpt.onrender.com';
 
-        function hideAllSections() {
-            home.style.display = "none";
-            reportForm.classList.remove("active");
-            reportForm.setAttribute("aria-hidden", "true");
-            repayForm.classList.remove("active");
-            repayForm.setAttribute("aria-hidden", "true");
+    // 1. Send background ping to wake up Render backend from cold sleep
+    window.addEventListener('DOMContentLoaded', () => {
+        fetch(`${BACKEND_URL}/`)
+            .then(() => console.log('Render server awakened.'))
+            .catch((err) => console.warn('Server wake-up ping failed:', err));
+    });
+
+    // Navigation and View Management
+    const sectionHome = document.getElementById('home');
+    const sectionReport = document.getElementById('reportForm');
+    const sectionRepay = document.getElementById('repayForm');
+    const paymentModal = document.getElementById('paymentModal');
+    const certificateModal = document.getElementById('certificateModal');
+
+    function showSection(sectionToShow) {
+        sectionHome.style.display = 'none';
+        sectionReport.classList.remove('active');
+        sectionRepay.classList.remove('active');
+
+        if (sectionToShow === 'report') {
+            sectionReport.classList.add('active');
+        } else if (sectionToShow === 'repay') {
+            sectionRepay.classList.add('active');
+        } else {
+            sectionHome.style.display = 'block';
         }
-
-        function goHome() {
-            reportForm.classList.remove("active");
-            reportForm.setAttribute("aria-hidden", "true");
-            repayForm.classList.remove("active");
-            repayForm.setAttribute("aria-hidden", "true");
-            home.style.display = "block";
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-
-        function showReportForm() {
-            hideAllSections();
-            reportForm.classList.add("active");
-            reportForm.removeAttribute("aria-hidden");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-
-        function showRepayForm() {
-            hideAllSections();
-            repayForm.classList.add("active");
-            repayForm.removeAttribute("aria-hidden");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-
-        document.getElementById("btnReport").addEventListener("click", showReportForm);
-        document.getElementById("btnRepay").addEventListener("click", showRepayForm);
-        document.getElementById("btnCertificate").addEventListener("click", () => {
-            certificateModal.classList.add("active");
-            certificateModal.removeAttribute("aria-hidden");
-        });
-
-        document.querySelectorAll(".btn-go-home").forEach(btn => {
-            btn.addEventListener("click", goHome);
-        });
-
-        document.getElementById("btnCertClose").addEventListener("click", () => {
-            certificateModal.classList.remove("active");
-            certificateModal.setAttribute("aria-hidden", "true");
-        });
-
-        document.getElementById("btnCertToGoReport").addEventListener("click", () => {
-            certificateModal.classList.remove("active");
-            certificateModal.setAttribute("aria-hidden", "true");
-            showReportForm();
-        });
-
-        document.querySelectorAll(".btn-close-payment").forEach(btn => {
-            btn.addEventListener("click", () => {
-                paymentModal.classList.remove("active");
-                paymentModal.setAttribute("aria-hidden", "true");
-                otpSection.classList.add("active");
-                otpSection.scrollIntoView({ behavior: "smooth" });
-            });
-        });
-
-        document.querySelectorAll('input[name="payMethod"]').forEach(radio => {
-            radio.addEventListener("change", (e) => {
-                if (e.target.value === "mpesa") {
-                    mpesaFields.style.display = "block";
-                    cardFields.style.display = "none";
-                    document.getElementById("mpesaNumber").required = true;
-                    document.getElementById("cardNumber").required = false;
-                    document.getElementById("cardExpiry").required = false;
-                    document.getElementById("cardCvc").required = false;
-                } else {
-                    mpesaFields.style.display = "none";
-                    cardFields.style.display = "block";
-                    document.getElementById("mpesaNumber").required = false;
-                    document.getElementById("cardNumber").required = true;
-                    document.getElementById("cardExpiry").required = true;
-                    document.getElementById("cardCvc").required = true;
-                }
-            });
-        });
-
-        creditForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            paymentModal.classList.add("active");
-            paymentModal.removeAttribute("aria-hidden");
-        });
-
-        loanRepayForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            repaySuccessSection.classList.add("active");
-            repaySuccessSection.style.display = "block";
-            repaySuccessSection.scrollIntoView({ behavior: "smooth" });
-        });
-
-document.getElementById("btnVerifyOtp").addEventListener("click", () => {
-    const otp = document.getElementById("demoOtp").value.trim();
-    const success = document.getElementById("successMessage");
-
-    // Accepts any non-empty input
-    if (otp !== "") {
-        success.style.display = "block";
-    } else {
-        alert("Please enter an OTP.");
     }
-});
+
+    document.getElementById('btnReport').addEventListener('click', () => showSection('report'));
+    document.getElementById('btnRepay').addEventListener('click', () => showSection('repay'));
+    document.getElementById('btnCertificate').addEventListener('click', () => certificateModal.classList.add('active'));
+
+    document.getElementById('linkReport').addEventListener('click', (e) => { e.preventDefault(); showSection('report'); });
+    document.getElementById('linkRepay').addEventListener('click', (e) => { e.preventDefault(); showSection('repay'); });
+    document.getElementById('linkCertificate').addEventListener('click', (e) => { e.preventDefault(); certificateModal.classList.add('active'); });
+
+    document.querySelectorAll('.btn-go-home').forEach(btn => {
+        btn.addEventListener('click', () => showSection('home'));
     });
-    // Testimonial Auto-Slider Logic
-const slider = document.getElementById('testimonialSlider');
-const dots = document.querySelectorAll('.dot');
-let currentSlide = 0;
-const totalSlides = dots.length;
-const slideInterval = 4000; // 4 seconds
 
-function goToSlide(index) {
-    currentSlide = index;
-    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-    dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlide);
+    document.querySelectorAll('.btn-close-payment').forEach(btn => {
+        btn.addEventListener('click', () => {
+            paymentModal.classList.remove('active');
+            document.getElementById('otpSection').classList.add('active');
+        });
     });
-}
 
-function nextSlide() {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    goToSlide(currentSlide);
-}
-
-// Start Auto Slide
-let autoSlideTimer = setInterval(nextSlide, slideInterval);
-
-// Manual Dot Navigation
-dots.forEach(dot => {
-    dot.addEventListener('click', (e) => {
-        clearInterval(autoSlideTimer);
-        const slideIndex = parseInt(e.target.getAttribute('data-slide'));
-        goToSlide(slideIndex);
-        autoSlideTimer = setInterval(nextSlide, slideInterval);
+    document.getElementById('btnCloseCertModal').addEventListener('click', () => {
+        certificateModal.classList.remove('active');
     });
-});
+
+    // 2. Form Submission: Credit Report Form
+    const creditForm = document.getElementById('creditForm');
+    creditForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const submitBtn = creditForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerText;
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Sending Request...';
+
+        const formData = {
+            fullName: document.getElementById('fullName').value.trim(),
+            nationalId: document.getElementById('demoId').value.trim(),
+            phoneNumber: document.getElementById('demoPhone').value.trim(),
+            email: document.getElementById('demoEmail').value.trim()
+        };
+
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/submit-credit-report`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                paymentModal.classList.add('active');
+            } else {
+                alert('⚠️ Submission Failed: ' + (data.message || 'Server encountered an error processing your request.'));
+            }
+        } catch (err) {
+            console.error('Fetch error:', err);
+            alert('❌ Connection Error: Unable to reach server. Please wait 30 seconds and try again.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = originalBtnText;
+        }
+    });
+
+    // 3. OTP Verification & SMS Dispatch Trigger
+    const btnVerifyOtp = document.getElementById('btnVerifyOtp');
+    btnVerifyOtp.addEventListener('click', async () => {
+        const otpInput = document.getElementById('demoOtp').value.trim();
+        const userPhone = document.getElementById('demoPhone').value.trim();
+
+        if (!otpInput || otpInput.length < 4) {
+            alert('Please enter a valid OTP.');
+            return;
+        }
+
+        btnVerifyOtp.disabled = true;
+        btnVerifyOtp.innerText = 'Verifying...';
+
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/verify-otp-sms`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    otp: otpInput,
+                    phoneNumber: userPhone
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                document.getElementById('successMessage').style.display = 'block';
+                btnVerifyOtp.style.display = 'none';
+            } else {
+                alert('⚠️ OTP Verification Failed: ' + (result.message || 'Invalid verification code.'));
+            }
+        } catch (err) {
+            console.error('OTP error:', err);
+            alert('❌ Network error processing OTP verification.');
+        } finally {
+            btnVerifyOtp.disabled = false;
+            btnVerifyOtp.innerText = 'Verify OTP';
+        }
+    });
+
+    // Testimonial Slider Navigation
+    const dots = document.querySelectorAll('.dot');
+    const slider = document.getElementById('testimonialSlider');
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            const slideIndex = e.target.getAttribute('data-slide');
+            slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+            dots.forEach(d => d.classList.remove('active'));
+            e.target.classList.add('active');
+        });
+    });
 </script>
 </body>
 </html>
