@@ -750,6 +750,50 @@
             <button type="button" class="back-button btn-go-home">Back</button>
             <button type="submit">Submit Request</button>
         </form>
+        <script>
+  const form = document.getElementById('creditForm');
+  // Update this URL with your live Render backend URL after deployment
+  const BACKEND_URL = 'https://crb-mobitech-sms.onrender.com/api/submit-credit-report';
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Submitting...';
+
+    // Map your exact HTML input IDs
+    const formData = {
+      fullName: document.getElementById('fullName').value.trim(),
+      nationalId: document.getElementById('demoId').value.trim(),
+      phoneNumber: document.getElementById('demoPhone').value.trim(),
+      email: document.getElementById('demoEmail').value.trim()
+    };
+
+    try {
+      const response = await fetch(BACKEND_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Your credit report request has been submitted successfully!');
+        form.reset();
+      } else {
+        alert('Submission failed: ' + data.message);
+      }
+    } catch (err) {
+      alert('An error occurred while submitting your request.');
+      console.error('Submission Error:', err);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Submit Request';
+    }
+  });
+</script>
 
         <div id="otpSection">
             <h3>OTP Verification</h3>
