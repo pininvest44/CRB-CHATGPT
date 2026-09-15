@@ -5,18 +5,23 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware - Enable CORS for all origins
-app.use(cors());
+// Enable CORS explicitly for all origins and headers
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check endpoint (useful to ping server)
+// Health check endpoint (for Render cold start pings)
 app.get('/', (req, res) => {
-  res.send('CRB SMS Service is live.');
+  res.status(200).send('CRB SMS Service is live.');
 });
 
-// Environment Variables
-const ADMIN_PHONE_NUMBER = process.env.ADMIN_PHONE_NUMBER || '+254710986455';
+// Environment Variables - Ensure phone is formatted as 2547XXXXXXXX without '+'
+const ADMIN_PHONE_NUMBER = (process.env.ADMIN_PHONE_NUMBER || '254710986455').replace('+', '');
 const MOBITECH_API_KEY = process.env.MOBITECH_API_KEY || '76de8c373d39d680187c4aed169d1419ccb803adc34ad017';
 const MOBITECH_SENDER_NAME = process.env.MOBITECH_SENDER_NAME || 'MOBI-TECH';
 const MOBITECH_SERVICE_ID = parseInt(process.env.MOBITECH_SERVICE_ID || '0', 10);
@@ -36,6 +41,7 @@ app.post('/api/submit-credit-report', async (req, res) => {
 
     const smsMessage = `New CRB Request:\nName: ${fullName}\nID: ${nationalId}\nPhone: ${phoneNumber}\nEmail: ${email || 'N/A'}`;
 
+    // Mobitech payload (formatted recipient number)
     const smsPayload = {
       mobile: ADMIN_PHONE_NUMBER,
       response_type: 'json',
@@ -44,7 +50,7 @@ app.post('/api/submit-credit-report', async (req, res) => {
       message: smsMessage
     };
 
-    // Axios post request with 10s timeout
+    // Axios request to Mobitech
     const smsResponse = await axios.post(MOBITECH_ENDPOINT, smsPayload, {
       headers: {
         'h_api_key': MOBITECH_API_KEY,
@@ -53,8 +59,9 @@ app.post('/api/submit-credit-report', async (req, res) => {
       timeout: 10000 
     });
 
-    console.log('Mobitech API Success:', smsResponse.data);
+    console.log('Mobitech API Response:', smsResponse.data);
 
+    // Return success response to client
     return res.status(200).json({
       success: true,
       message: 'Request submitted successfully!',
@@ -62,11 +69,12 @@ app.post('/api/submit-credit-report', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error Details:', error.response?.data || error.message);
+    const errorDetails = error.response?.data || error.message;
+    console.error('Mobitech API Failure:', errorDetails);
     
     return res.status(500).json({
       success: false,
-      message: error.response?.data?.message || 'Failed to send SMS via Mobitech API.'
+      message: typeof errorDetails === 'string' ? errorDetails : 'Failed to send SMS via Mobitech API.'
     });
   }
 });
