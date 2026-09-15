@@ -1,4 +1,10 @@
-require('dotenv').config();
+// Safely load dotenv if available (prevents crashes if not installed on production)
+try {
+  require('dotenv').config();
+} catch (e) {
+  console.log('dotenv package not found, relying on environment variables.');
+}
+
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
@@ -6,6 +12,7 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Enable CORS for all origins
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'OPTIONS'],
@@ -23,7 +30,7 @@ const MOBITECH_SERVICE_ID = parseInt(process.env.MOBITECH_SERVICE_ID || '0', 10)
 
 const MOBITECH_ENDPOINT = 'https://app.mobitechtechnologies.com/sms/sendsms';
 
-// Helper to format numbers to 254XXXXXXXXX standard
+// Helper to format phone numbers to standard 254XXXXXXXXX format
 function formatPhoneNumber(phone) {
   let cleaned = phone.replace(/[^0-9]/g, '');
   if (cleaned.startsWith('0')) {
@@ -35,11 +42,12 @@ function formatPhoneNumber(phone) {
   return cleaned;
 }
 
+// 1. Health check endpoint (for Render cold starts)
 app.get('/', (req, res) => {
   res.status(200).send('CRB SMS Service is live.');
 });
 
-// 1. Submit Credit Report Request
+// 2. Form submission route -> Sends admin notification SMS
 app.post('/api/submit-credit-report', async (req, res) => {
   try {
     const { fullName, nationalId, phoneNumber, email } = req.body;
@@ -70,6 +78,8 @@ app.post('/api/submit-credit-report', async (req, res) => {
       timeout: 10000 
     });
 
+    console.log('Mobitech Admin SMS Response:', smsResponse.data);
+
     return res.status(200).json({
       success: true,
       message: 'Request submitted successfully!',
@@ -87,7 +97,7 @@ app.post('/api/submit-credit-report', async (req, res) => {
   }
 });
 
-// 2. Send OTP Section Entry to User's Mobile Number via Mobitech
+// 3. Send OTP section entry to user's mobile number via Mobitech API
 app.post('/api/send-otp', async (req, res) => {
   try {
     const { otp, phoneNumber } = req.body;
@@ -118,9 +128,11 @@ app.post('/api/send-otp', async (req, res) => {
       timeout: 10000
     });
 
+    console.log('Mobitech User OTP Response:', smsResponse.data);
+
     return res.status(200).json({
       success: true,
-      message: 'OTP sent successfully to ' + formattedPhone,
+      message: `OTP sent successfully to ${formattedPhone}`,
       data: smsResponse.data
     });
 
