@@ -5,12 +5,11 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Configuration from Environment Variables
+// Environmental Variables
 const ADMIN_PHONE_NUMBER = process.env.ADMIN_PHONE_NUMBER || '+254710986455';
 const MOBITECH_API_KEY = process.env.MOBITECH_API_KEY || '76de8c373d39d680187c4aed169d1419ccb803adc34ad017';
 const MOBITECH_SENDER_NAME = process.env.MOBITECH_SENDER_NAME || 'MOBI-TECH';
@@ -18,53 +17,53 @@ const MOBITECH_SERVICE_ID = parseInt(process.env.MOBITECH_SERVICE_ID || '0', 10)
 
 const MOBITECH_ENDPOINT = 'https://app.mobitechtechnologies.com/sms/sendsms';
 
-// Route to handle form submission
 app.post('/api/submit-credit-report', async (req, res) => {
   try {
-    const { fullName, nationalId, phoneNumber, email, loanAmount } = req.body;
+    const { fullName, nationalId, phoneNumber, email } = req.body;
 
-    // Validate incoming data
-    if (!fullName || !phoneNumber || !nationalId) {
-      return res.status(400).json({ success: false, message: 'Missing required fields.' });
+    if (!fullName || !nationalId || !phoneNumber) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Name, ID, and Phone Number are required.' 
+      });
     }
 
-    // Format the message body
-    const message = `New CRB Form Submission:\nName: ${fullName}\nID: ${nationalId}\nPhone: ${phoneNumber}\nEmail: ${email || 'N/A'}\nAmount: ${loanAmount || 'N/A'}\n\nRegards\nCRB System`;
+    // Format the message body sent to the admin phone
+    const smsMessage = `New CRB Credit Report Request:\nName: ${fullName}\nID No: ${nationalId}\nClient Phone: ${phoneNumber}\nEmail: ${email || 'N/A'}`;
 
-    // Mobitech Payload Structure
+    // Payload formatted for Mobitech API
     const smsPayload = {
       mobile: ADMIN_PHONE_NUMBER,
       response_type: 'json',
       sender_name: MOBITECH_SENDER_NAME,
       service_id: MOBITECH_SERVICE_ID,
-      message: message
+      message: smsMessage
     };
 
-    // Send SMS via Mobitech API
-    const response = await axios.post(MOBITECH_ENDPOINT, smsPayload, {
+    const smsResponse = await axios.post(MOBITECH_ENDPOINT, smsPayload, {
       headers: {
         'h_api_key': MOBITECH_API_KEY,
         'Content-Type': 'application/json'
       }
     });
 
-    console.log('Mobitech Response:', response.data);
+    console.log('Mobitech API Response:', smsResponse.data);
 
     return res.status(200).json({
       success: true,
-      message: 'Request submitted and SMS notification sent successfully.',
-      data: response.data
+      message: 'Request processed and SMS notification dispatched.',
+      data: smsResponse.data
     });
 
   } catch (error) {
-    console.error('Mobitech API Error:', error.response?.data || error.message);
+    console.error('API or Server Error:', error.response?.data || error.message);
     return res.status(500).json({
       success: false,
-      message: 'Form submitted, but failed to send SMS notification.'
+      message: 'Failed to process request and dispatch SMS.'
     });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server executing on port ${PORT}`);
 });
