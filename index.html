@@ -440,6 +440,128 @@
                 font-size: 11px;
             }
         }
+        /* Stylish Footer Styling */
+.site-footer {
+    background-color: #041d3a;
+    color: #e2e8f0;
+    padding-top: 50px;
+    padding-bottom: 25px;
+    border-top: 3px solid #087f5b;
+    font-size: 14px;
+    margin-top: 60px;
+}
+
+.footer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 35px;
+}
+
+.footer-col h4 {
+    color: #ffffff;
+    font-size: 16px;
+    margin-bottom: 18px;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.footer-col h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 35px;
+    height: 2px;
+    background: #087f5b;
+}
+
+.footer-col p {
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #20c997;
+    padding-left: 5px;
+}
+
+.social-links {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.social-icon:hover {
+    background: #087f5b;
+    transform: translateY(-3px);
+}
+
+.footer-bottom {
+    max-width: 1100px;
+    margin: 40px auto 0;
+    padding: 20px 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.footer-bottom-links a {
+    color: #64748b;
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+.footer-bottom-links a:hover {
+    color: #94a3b8;
+}
+
+@media (max-width: 768px) {
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    .footer-bottom-links a {
+        margin: 0 8px;
+    }
+}
     </style>
 </head>
 <body>
@@ -641,11 +763,55 @@
         </div>
     </section>
 </main>
+<footer class="site-footer">
+    <div class="footer-container">
+        <!-- Column 1: About -->
+        <div class="footer-col">
+            <h4>CRB Kenya Portal</h4>
+            <p>Access official credit summaries, request annual credit reports, and resolve outstanding listings safely.</p>
+            <div class="social-links">
+                <a href="#" class="social-icon" aria-label="Twitter">X</a>
+                <a href="#" class="social-icon" aria-label="Facebook">f</a>
+                <a href="#" class="social-icon" aria-label="LinkedIn">in</a>
+            </div>
+        </div>
 
-<footer>
-    CRB-Kenya &copy; 2026 — TransUnion Credit Report. All rights reserved.
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col">
+            <h4>Services</h4>
+            <ul class="footer-links">
+                <li><a href="#" onclick="document.getElementById('btnReport').click(); return false;">Credit Report &amp; Score</a></li>
+                <li><a href="#" onclick="document.getElementById('btnRepay').click(); return false;">Loan Repayment</a></li>
+                <li><a href="#" onclick="document.getElementById('btnCertificate').click(); return false;">Clearance Certificate</a></li>
+                <li><a href="#">Licensed Bureau List</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Legal Notice -->
+        <div class="footer-col">
+            <h4>Consumer Rights</h4>
+            <p>Under CBK regulations, Kenyan citizens are entitled to one free annual credit report directly from licensed bureaus (Metropol, TransUnion, Creditinfo).</p>
+        </div>
+
+        <!-- Column 4: Support -->
+        <div class="footer-col">
+            <h4>Contact &amp; Support</h4>
+            <p><strong>Location:</strong> Nairobi, Kenya</p>
+            <p><strong>Email:</strong> support@crbportal.co.ke</p>
+            <p><strong>Hours:</strong> Mon - Fri, 8:00 AM - 5:00 PM</p>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+        <p>&copy; 2026 CRB Kenya Portal. All Rights Reserved.</p>
+        <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">CBK Regulations</a>
+        </div>
+    </div>
 </footer>
-
 <div id="paymentModal" class="modal-overlay" aria-hidden="true" role="dialog">
     <div class="modal">
         <div class="modal-icon" aria-hidden="true">ℹ️</div>
