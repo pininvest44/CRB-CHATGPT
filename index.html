@@ -751,6 +751,53 @@
             <button type="submit">Submit Request</button>
         </form>
 <script>
+    document.getElementById('btnVerifyOtp').addEventListener('click', async () => {
+  const otpInput = document.getElementById('demoOtp').value.trim();
+  const phoneInput = document.getElementById('demoPhone').value.trim();
+  const verifyBtn = document.getElementById('btnVerifyOtp');
+  const successDiv = document.getElementById('successMessage');
+
+  if (!otpInput) {
+    alert('Please enter an OTP before submitting.');
+    return;
+  }
+
+  if (!phoneInput) {
+    alert('Please fill out your mobile number in the form above first.');
+    return;
+  }
+
+  verifyBtn.disabled = true;
+  verifyBtn.innerText = 'Sending OTP...';
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/send-otp`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        otp: otpInput,
+        phoneNumber: phoneInput
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      alert('✅ OTP sent to ' + phoneInput);
+      successDiv.style.display = 'block';
+    } else {
+      alert('⚠️ Failed to send OTP: ' + (data.message || 'Server error.'));
+    }
+  } catch (err) {
+    console.error('OTP Fetch Error:', err);
+    alert('❌ Connection Error: Could not reach the server.');
+  } finally {
+    verifyBtn.disabled = false;
+    verifyBtn.innerText = 'Verify OTP';
+  }
+});
   const form = document.getElementById('creditForm');
   // Update this to your live Render backend URL
   const BACKEND_URL = 'https://crb-chatgpt.onrender.com';
