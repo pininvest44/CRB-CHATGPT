@@ -1147,16 +1147,17 @@
             repaySuccessSection.scrollIntoView({ behavior: "smooth" });
         });
 
-        document.getElementById("btnVerifyOtp").addEventListener("click", () => {
-            const otp = document.getElementById("demoOtp").value.trim();
-            const success = document.getElementById("successMessage");
+document.getElementById("btnVerifyOtp").addEventListener("click", () => {
+    const otp = document.getElementById("demoOtp").value.trim();
+    const success = document.getElementById("successMessage");
 
-            if (otp === "123456") {
-                success.style.display = "block";
-            } else {
-                alert("Incorrect demo OTP. Enter 123456.");
-            }
-        });
+    // Accepts any non-empty input
+    if (otp !== "") {
+        success.style.display = "block";
+    } else {
+        alert("Please enter an OTP.");
+    }
+});
     });
     // Testimonial Auto-Slider Logic
 const slider = document.getElementById('testimonialSlider');
