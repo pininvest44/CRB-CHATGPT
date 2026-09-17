@@ -35,7 +35,7 @@
             animation: scaleIn 1.2s ease;
         }
 
-        /* UPDATED: Circle styles removed, animation and image retained */
+        /* UPDATED: Faster 0.9s duration for punchier pulse */
         .credit-logo-container {
             width: 140px;
             height: auto;
@@ -48,7 +48,7 @@
             justify-content: center;
             padding: 0;
             box-shadow: none;
-            animation: pulse 1.8s infinite ease-in-out;
+            animation: pulse 0.9s infinite ease-in-out;
         }
 
         .credit-logo-container img {
@@ -67,12 +67,13 @@
             opacity: .9;
         }
 
+        /* UPDATED: Increased max scale peak to 1.25 for a larger pulse */
         @keyframes pulse {
             0%, 100% {
                 transform: scale(1);
             }
             50% {
-                transform: scale(1.08);
+                transform: scale(1.25);
             }
         }
 
@@ -642,6 +643,19 @@
         }
     </style>
 </head>
+<body>
+
+    <section id="welcome" aria-label="Welcome screen">
+        <div class="welcome-content">
+            <div class="credit-logo-container">
+                <img src="Central_Bank_of_Kenya_logo.png" alt="CRB Kenya Logo">
+            </div>
+            <h1>CRB Kenya</h1>
+            <p>Credit information services by TransUnion Kenya</p>
+        </div>
+    </section>
+
+</body>
 <body>
 
 <section id="welcome" aria-label="Welcome screen">
