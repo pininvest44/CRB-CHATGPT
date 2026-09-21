@@ -763,7 +763,6 @@
         </div>
     </section>
 
-    <!-- Loan Repayment Form Container -->
 <!-- Loan Repayment Form Container -->
 <section id="repayForm" class="form-container" aria-hidden="false">
     <h2>Repay Defaulted Loan(s)</h2>
@@ -844,7 +843,7 @@
         <button type="submit" id="paySubmitBtn">Proceed to Pay</button>
     </form>
 
-    <div id="repaySuccessSection" class="success" style="display: none;">
+    <div id="repaySuccessSection" class="success" style="display: none;" aria-hidden="true">
         <h3>✓ Repayment Processing Initiated</h3>
         <p id="repaySuccessMessage">Payment submitted successfully. An update notification will be dispatched to the lender and CRB within 24 hours.</p>
     </div>
@@ -852,12 +851,14 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const repaySection = document.getElementById('repayForm');
     const loanForm = document.getElementById('loanRepayForm');
     const payMethodRadios = document.getElementsByName('payMethod');
     const mpesaFields = document.getElementById('mpesaFields');
     const cardFields = document.getElementById('cardFields');
+    const paySubmitBtn = document.getElementById('paySubmitBtn');
     
-    // Inputs
+    // Form Inputs
     const mpesaNumber = document.getElementById('mpesaNumber');
     const cardNumber = document.getElementById('cardNumber');
     const cardExpiry = document.getElementById('cardExpiry');
@@ -865,7 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const repaySuccessSection = document.getElementById('repaySuccessSection');
     const repaySuccessMessage = document.getElementById('repaySuccessMessage');
 
-    // 1. Automatic formatting for Card inputs
+    // 1. Automatic Formatting for Card Inputs
     cardNumber.addEventListener('input', (e) => {
         let value = e.target.value.replace(/\D/g, '');
         value = value.replace(/(.{4})/g, '$1 ').trim();
@@ -884,7 +885,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
     });
 
-    // 2. Dynamic Input Toggle & Required Attribute Switching
+    // 2. Dynamic Field Display & Validation Rules
     payMethodRadios.forEach(radio => {
         radio.addEventListener('change', (e) => {
             const isMpesa = e.target.value === 'mpesa';
@@ -892,7 +893,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mpesaFields.style.display = isMpesa ? 'block' : 'none';
             cardFields.style.display = isMpesa ? 'none' : 'block';
 
-            // Toggle HTML5 required validation
+            // Toggle HTML5 required flags dynamically
             mpesaNumber.required = isMpesa;
             cardNumber.required = !isMpesa;
             cardExpiry.required = !isMpesa;
@@ -905,7 +906,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         const selectedMethod = document.querySelector('input[name="payMethod"]:checked').value;
-        let payload = {
+        const payload = {
             lender: document.getElementById('lenderSelect').value,
             accountRef: document.getElementById('accountRef').value,
             amount: parseFloat(document.getElementById('repayAmount').value),
@@ -914,9 +915,15 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (selectedMethod === 'mpesa') {
-            payload.mpesaNumber = mpesaNumber.value;
+            const cleanedPhone = mpesaNumber.value.trim().replace(/\s+/g, '');
+            
+            // Validate Kenyan Mobile Number Formats (07... / 01... / 254...)
+            if (!/^(01|07|254)\d{8}$/.test(cleanedPhone)) {
+                alert('Please enter a valid M-Pesa mobile number (e.g. 0712345678).');
+                return;
+            }
+            payload.mpesaNumber = cleanedPhone;
         } else {
-            // Basic Card Validation
             const rawCardNo = cardNumber.value.replace(/\s+/g, '');
             if (rawCardNo.length < 13 || rawCardNo.length > 19) {
                 alert('Please enter a valid card number.');
@@ -938,6 +945,10 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
+        // Disable UI button during fetch execution
+        paySubmitBtn.disabled = true;
+        paySubmitBtn.textContent = 'Processing...';
+
         try {
             const response = await fetch('https://crb-backend-amt0.onrender.com/api/repay-loan', {
                 method: 'POST',
@@ -945,17 +956,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(payload)
             });
 
-            if (selectedMethod === 'mpesa') {
-                repaySuccessMessage.textContent = 'Check your phone for the M-Pesa STK push prompt to complete repayment.';
-            } else {
-                repaySuccessMessage.textContent = 'Card payment processed successfully. An update notification will be sent to the lender within 24 hours.';
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || result.success === false) {
+                throw new Error(result.message || `Server returned status ${response.status}`);
             }
 
+            if (selectedMethod === 'mpesa') {
+                repaySuccessMessage.textContent = 'Check your phone for the M-Pesa STK push prompt to enter your PIN.';
+            } else {
+                repaySuccessMessage.textContent = 'Card payment processed successfully. An update notification will be dispatched within 24 hours.';
+            }
+
+            // Update UI State & Accessibility Attributes
             loanForm.style.display = 'none';
             repaySuccessSection.style.display = 'block';
+            repaySuccessSection.setAttribute('aria-hidden', 'false');
+
         } catch (err) {
-            console.error('Repayment request error:', err);
-            alert('Unable to process payment right now. Please try again.');
+            console.error('Repayment submit error:', err);
+            alert(err.message || 'Unable to process payment right now. Please try again.');
+        } finally {
+            paySubmitBtn.disabled = false;
+            paySubmitBtn.textContent = 'Proceed to Pay';
         }
     });
 });
