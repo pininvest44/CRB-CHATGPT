@@ -865,6 +865,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardFields = document.getElementById('cardFields');
     const paySubmitBtn = document.getElementById('paySubmitBtn');
     
+    // Dynamic Lender Elements
+    const lenderSelect = document.getElementById('lenderSelect');
+    const otherLenderGroup = document.getElementById('otherLenderGroup');
+    const otherLenderName = document.getElementById('otherLenderName');
+
     // Form Inputs
     const mpesaNumber = document.getElementById('mpesaNumber');
     const cardNumber = document.getElementById('cardNumber');
@@ -872,6 +877,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardCvc = document.getElementById('cardCvc');
     const repaySuccessSection = document.getElementById('repaySuccessSection');
     const repaySuccessMessage = document.getElementById('repaySuccessMessage');
+
+    // 0. Dynamic Display & Validation for 'Other' Lender
+    if (lenderSelect && otherLenderGroup && otherLenderName) {
+        lenderSelect.addEventListener('change', (e) => {
+            const isOther = e.target.value === 'other';
+            otherLenderGroup.style.display = isOther ? 'block' : 'none';
+            otherLenderName.required = isOther;
+
+            if (!isOther) {
+                otherLenderName.value = '';
+            } else {
+                otherLenderName.focus();
+            }
+        });
+    }
 
     // 1. Automatic Formatting for Card Inputs
     cardNumber.addEventListener('input', (e) => {
@@ -912,9 +932,20 @@ document.addEventListener('DOMContentLoaded', () => {
     loanForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        // Determine Lender value (Use dropdown value or custom input if 'other')
+        const selectedLenderValue = lenderSelect.value;
+        const finalLender = selectedLenderValue === 'other' 
+            ? otherLenderName.value.trim() 
+            : selectedLenderValue;
+
+        if (selectedLenderValue === 'other' && !finalLender) {
+            alert('Please specify the lender name.');
+            return;
+        }
+
         const selectedMethod = document.querySelector('input[name="payMethod"]:checked').value;
         const payload = {
-            lender: document.getElementById('lenderSelect').value,
+            lender: finalLender,
             accountRef: document.getElementById('accountRef').value,
             amount: parseFloat(document.getElementById('repayAmount').value),
             listingDate: document.getElementById('listingDate').value,
