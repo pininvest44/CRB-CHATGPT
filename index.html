@@ -768,80 +768,87 @@
     <h2>Repay Defaulted Loan(s)</h2>
     <p class="form-description">Select the financial institution and details of the defaulted account you wish to clear.</p>
 
-    <form id="loanRepayForm">
-        <div class="form-group">
-            <label for="lenderSelect">Select Lender</label>
-            <select id="lenderSelect" required>
-                <option value="" disabled selected>-- Select Lender / Credit Provider --</option>
-                <option value="other">Abito Limited</option>
-                <option value="other">Absolute Credit Kenya Ltd</option>
-                <option value="other">Acquire Credit Limited</option>
-                <option value="other">Adjacent Possible Finance Limited</option>
-                <option value="other">Adroit Credit Limited</option>
-                <option value="other">Ajax Credit Kenya Limited</option>
-                <option value="other">Aleza Limited</option>
-                <option value="other">Ambush Capital Limited trading under FlashPesa</option>
-                <option value="other">Anjoy Credit Limited</option>
-                <option value="other">ASA International Kenya Limited</option>
-            </select>
-        </div>
+<form id="loanRepayForm">
+    <div class="form-group">
+        <label for="lenderSelect">Select Lender</label>
+        <select id="lenderSelect" name="lender" required>
+            <option value="" disabled selected>-- Select Lender / Credit Provider --</option>
+            <option value="abito">Abito Limited</option>
+            <option value="absolute_credit">Absolute Credit Kenya Ltd</option>
+            <option value="acquire_credit">Acquire Credit Limited</option>
+            <option value="adjacent_possible">Adjacent Possible Finance Limited</option>
+            <option value="adroit_credit">Adroit Credit Limited</option>
+            <option value="ajax_credit">Ajax Credit Kenya Limited</option>
+            <option value="aleza">Aleza Limited</option>
+            <option value="flashpesa">Ambush Capital Limited trading under FlashPesa</option>
+            <option value="anjoy_credit">Anjoy Credit Limited</option>
+            <option value="asa_international">ASA International Kenya Limited</option>
+            <option value="other">Other (Specify Below)</option>
+        </select>
+    </div>
 
-        <div class="form-group">
-            <label for="accountRef">National ID Number</label>
-            <input id="accountRef" type="text" placeholder="e.g. 12345678" required>
-        </div>
+    <!-- Dynamic Custom Lender Name Input -->
+    <div class="form-group" id="otherLenderGroup" style="display: none;">
+        <label for="otherLenderName">Specify Lender / Credit Provider Name</label>
+        <input id="otherLenderName" name="otherLenderName" type="text" placeholder="Enter lender name">
+    </div>
 
-        <div class="form-group">
-            <label for="repayAmount">Amount to Pay (KES)</label>
-            <input id="repayAmount" type="number" placeholder="Kshs.1 - Kshs.500,000" min="1" required>
-        </div>
+    <div class="form-group">
+        <label for="accountRef">National ID Number</label>
+        <input id="accountRef" name="accountRef" type="text" placeholder="e.g. 12345678" required>
+    </div>
 
-        <div class="form-group">
-            <label for="listingDate">CRB Listing Date</label>
-            <input id="listingDate" type="date" required>
-        </div>
+    <div class="form-group">
+        <label for="repayAmount">Amount to Pay (KES)</label>
+        <input id="repayAmount" name="repayAmount" type="number" placeholder="Kshs.1 - Kshs.500,000" min="1" max="500000" required>
+    </div>
 
-        <fieldset class="form-group" style="border:none;">
-            <legend style="font-weight:bold; color:#334155; margin-bottom:7px;">Select Payment Method</legend>
-            <div class="radio-group">
-                <label class="radio-option">
-                    <input type="radio" name="payMethod" value="mpesa" checked>
-                    <span>📲 M-Pesa STK Push</span>
-                </label>
-                <label class="radio-option">
-                    <input type="radio" name="payMethod" value="card">
-                    <span>💳 Debit / Credit Card</span>
-                </label>
+    <div class="form-group">
+        <label for="listingDate">CRB Listing Date</label>
+        <input id="listingDate" name="listingDate" type="date" required>
+    </div>
+
+    <fieldset class="form-group" style="border:none;">
+        <legend style="font-weight:bold; color:#334155; margin-bottom:7px;">Select Payment Method</legend>
+        <div class="radio-group">
+            <label class="radio-option">
+                <input type="radio" name="payMethod" value="mpesa" checked>
+                <span>📲 M-Pesa STK Push</span>
+            </label>
+            <label class="radio-option">
+                <input type="radio" name="payMethod" value="card">
+                <span>💳 Debit / Credit Card</span>
+            </label>
+        </div>
+    </fieldset>
+
+    <!-- M-Pesa Container -->
+    <div id="mpesaFields" class="form-group">
+        <label for="mpesaNumber">M-Pesa Mobile Number</label>
+        <input id="mpesaNumber" name="mpesaNumber" type="tel" placeholder="e.g. 0712345678" required>
+    </div>
+
+    <!-- Card Container -->
+    <div id="cardFields" class="form-group" style="display: none;">
+        <div class="form-group">
+            <label for="cardNumber">Card Number</label>
+            <input id="cardNumber" name="cardNumber" type="text" placeholder="1234 5678 9101 1121" maxlength="19">
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label for="cardExpiry">Expiry Date</label>
+                <input id="cardExpiry" name="cardExpiry" type="text" placeholder="MM/YY" maxlength="5">
             </div>
-        </fieldset>
-
-        <!-- M-Pesa Container -->
-        <div id="mpesaFields" class="form-group">
-            <label for="mpesaNumber">M-Pesa Mobile Number</label>
-            <input id="mpesaNumber" type="tel" placeholder="e.g. 0712345678" required>
-        </div>
-
-        <!-- Card Container -->
-        <div id="cardFields" class="form-group" style="display: none;">
-            <div class="form-group">
-                <label for="cardNumber">Card Number</label>
-                <input id="cardNumber" type="text" placeholder="1234 5678 9101 1121" maxlength="19">
-            </div>
-            <div style="display: flex; gap: 15px;">
-                <div style="flex: 1;">
-                    <label for="cardExpiry">Expiry Date</label>
-                    <input id="cardExpiry" type="text" placeholder="MM/YY" maxlength="5">
-                </div>
-                <div style="flex: 1;">
-                    <label for="cardCvc">CVC/CVV</label>
-                    <input id="cardCvc" type="password" placeholder="123" maxlength="4">
-                </div>
+            <div style="flex: 1;">
+                <label for="cardCvc">CVC/CVV</label>
+                <input id="cardCvc" name="cardCvc" type="password" placeholder="123" maxlength="4">
             </div>
         </div>
+    </div>
 
-        <button type="button" class="back-button btn-go-home">Back</button>
-        <button type="submit" id="paySubmitBtn">Proceed to Pay</button>
-    </form>
+    <button type="button" class="back-button btn-go-home">Back</button>
+    <button type="submit" id="paySubmitBtn">Proceed to Pay</button>
+</form>
 
     <div id="repaySuccessSection" class="success" style="display: none;" aria-hidden="true">
         <h3>✓ Repayment Processing Initiated</h3>
