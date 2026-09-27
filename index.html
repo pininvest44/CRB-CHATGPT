@@ -297,6 +297,7 @@
             margin-bottom: 7px;
             font-weight: bold;
             color: #334155;
+            text-align: left;
         }
 
         input, select {
@@ -342,6 +343,24 @@
             cursor: pointer;
         }
 
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            text-align: left;
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.5;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: auto;
+            margin-top: 3px;
+            cursor: pointer;
+        }
+
         .back-button {
             background: #64748b;
             margin-right: 8px;
@@ -374,7 +393,9 @@
         .modal {
             background: white;
             width: 100%;
-            max-width: 480px;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
             border-radius: 15px;
             padding: 30px;
             text-align: center;
@@ -970,6 +991,69 @@
             <button type="button" id="btnCertBack" style="background:#64748b; margin-right: 8px;">Back</button>
             <button type="button" id="btnCertProceed">Proceed with Application</button>
         </div>
+
+        <!-- Personal Certificate Application Form View -->
+        <div id="personalCertFormView" style="display: none; text-align: left;">
+            <h3 style="color:#063970; margin-bottom: 15px; text-align: center;">Personal Clearance Application Form</h3>
+            <form id="personalCertForm">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input id="firstName" name="firstName" type="text" placeholder="e.g. John" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="middleName">Middle Name</label>
+                    <input id="middleName" name="middleName" type="text" placeholder="e.g. Mwangi">
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input id="lastName" name="lastName" type="text" placeholder="e.g. Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cellPhone">Cell Phone Number</label>
+                    <input id="cellPhone" name="cellPhone" type="tel" placeholder="e.g. 0712345678" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="docType">Document Type</label>
+                    <select id="docType" name="docType" required>
+                        <option value="" disabled selected>-- Select Document Type --</option>
+                        <option value="National ID">National ID</option>
+                        <option value="Alien ID">Alien ID</option>
+                        <option value="Passport Number">Passport Number</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="docNumber">Document Number</label>
+                    <input id="docNumber" name="docNumber" type="text" placeholder="Enter document number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="certEmail">Email Address</label>
+                    <input id="certEmail" name="certEmail" type="email" placeholder="e.g. john@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="idUpload">Upload ID (Image or PDF)</label>
+                    <input id="idUpload" name="idUpload" type="file" accept="image/*,.pdf" required>
+                </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="consentCheck" name="consentCheck" required>
+                    <label for="consentCheck" style="font-weight: normal; margin-bottom: 0;">
+                        By clicking the "I consent" button you agree that Creditinfo can access your information held on the Credit Reference Bureau in terms of the Credit Reference Bureau Regulations 2020.
+                    </label>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
+                    <button type="button" id="btnPersonalCertFormBack" style="background:#64748b;">Back</button>
+                    <button type="submit" id="btnSubmitPersonalCert">Submit Application</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -993,13 +1077,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const certIntroView = document.getElementById('certIntroView');
     const certOptionsView = document.getElementById('certOptionsView');
     const certDetailsView = document.getElementById('certDetailsView');
+    const personalCertFormView = document.getElementById('personalCertFormView');
     const certTypeTitle = document.getElementById('certTypeTitle');
     const certTypeDesc = document.getElementById('certTypeDesc');
+
+    let selectedCertType = '';
 
     function resetCertModal() {
         certIntroView.style.display = 'block';
         certOptionsView.style.display = 'none';
         certDetailsView.style.display = 'none';
+        personalCertFormView.style.display = 'none';
+        selectedCertType = '';
     }
 
     function showSection(sectionToShow) {
@@ -1055,6 +1144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('btnPersonalCert').addEventListener('click', () => {
+        selectedCertType = 'personal';
         certOptionsView.style.display = 'none';
         certDetailsView.style.display = 'block';
         certTypeTitle.textContent = 'Personal Clearance Certificate';
@@ -1062,6 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('btnCompanyCert').addEventListener('click', () => {
+        selectedCertType = 'company';
         certOptionsView.style.display = 'none';
         certDetailsView.style.display = 'block';
         certTypeTitle.textContent = 'Company Clearance Certificate';
@@ -1074,7 +1165,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('btnCertProceed').addEventListener('click', () => {
-        alert('Redirecting to Clearance Certificate application form...');
+        if (selectedCertType === 'personal') {
+            certDetailsView.style.display = 'none';
+            personalCertFormView.style.display = 'block';
+        } else {
+            alert('Redirecting to Company Clearance Certificate application form...');
+            certificateModal.classList.remove('active');
+        }
+    });
+
+    document.getElementById('btnPersonalCertFormBack').addEventListener('click', () => {
+        personalCertFormView.style.display = 'none';
+        certDetailsView.style.display = 'block';
+    });
+
+    document.getElementById('personalCertForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Your Personal Clearance Certificate application has been submitted successfully!');
         certificateModal.classList.remove('active');
     });
 
