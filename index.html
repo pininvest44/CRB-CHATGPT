@@ -67,31 +67,17 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.08);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
         }
 
         @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(.7);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(.7); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         @keyframes fadeOut {
-            to {
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-            }
+            to { opacity: 0; visibility: hidden; pointer-events: none; }
         }
 
         header {
@@ -106,9 +92,7 @@
             justify-content: space-between;
         }
 
-        header h2 {
-            font-size: 23px;
-        }
+        header h2 { font-size: 23px; }
 
         .demo-label {
             background: #ffc107;
@@ -166,9 +150,7 @@
             animation: marquee 25s linear infinite;
         }
 
-        .info-strip-content:hover {
-            animation-play-state: paused;
-        }
+        .info-strip-content:hover { animation-play-state: paused; }
 
         .info-item {
             display: inline-flex;
@@ -262,6 +244,17 @@
         button:hover {
             background: #066b4d;
             transform: translateY(-1px);
+        }
+
+        .btn-option {
+            width: 100%;
+            margin-bottom: 12px;
+            text-align: center;
+            background: #063970;
+        }
+
+        .btn-option:hover {
+            background: #042952;
         }
 
         .form-container {
@@ -405,14 +398,8 @@
         }
 
         @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .success {
@@ -470,9 +457,7 @@
             padding: 0;
         }
 
-        .footer-links li {
-            margin-bottom: 10px;
-        }
+        .footer-links li { margin-bottom: 10px; }
 
         .footer-links a {
             color: #94a3b8;
@@ -530,9 +515,7 @@
             margin-left: 15px;
         }
 
-        .footer-bottom-links a:hover {
-            color: #94a3b8;
-        }
+        .footer-bottom-links a:hover { color: #94a3b8; }
 
         .testimonials-section {
             background: #ffffff;
@@ -635,9 +618,7 @@
                 flex-direction: column;
                 text-align: center;
             }
-            .footer-bottom-links a {
-                margin: 0 8px;
-            }
+            .footer-bottom-links a { margin: 0 8px; }
         }
     </style>
 </head>
@@ -959,16 +940,36 @@
     </div>
 </div>
 
+<!-- Clearance Certificate Modal -->
 <div id="certificateModal" class="modal-overlay" aria-hidden="true" role="dialog">
     <div class="modal">
         <div class="modal-icon" aria-hidden="true">📜</div>
         <h2>Clearance Certificate Application</h2>
         <p>
-            To apply for an official Certificate of Clearance, your credit record must show no non-performing loan accounts.
-            <br><br>
-            A processing fee of <strong>KES 2,200</strong> applies as per Central Bank of Kenya (CBK) guidelines.
+            To apply for an official Certificate of Clearance, your credit record must show no non-performing loan accounts as per Central Bank of Kenya (CBK) guidelines.
         </p>
-        <button type="button" id="btnCloseCertModal" style="background:#64748b;">Close</button>
+
+        <!-- Initial View with Continue Button -->
+        <div id="certIntroView">
+            <button type="button" id="btnCertContinue" style="width: 100%; margin-bottom: 12px;">Continue</button>
+            <button type="button" class="btnCloseCertModal" style="background:#64748b; width: 100%;">Close</button>
+        </div>
+
+        <!-- Options View Revealed After Continue is Clicked -->
+        <div id="certOptionsView" style="display: none;">
+            <p style="font-weight: bold; color: #063970; margin-bottom: 15px;">Select Certificate Type:</p>
+            <button type="button" class="btn-option" id="btnPersonalCert">Personal Clearance Certificate Application</button>
+            <button type="button" class="btn-option" id="btnCompanyCert">Company Clearance Certificate Application</button>
+            <button type="button" class="btnCloseCertModal" style="background:#64748b; width: 100%; margin-top: 8px;">Close</button>
+        </div>
+
+        <!-- Details View for Selected Type -->
+        <div id="certDetailsView" style="display: none;">
+            <h3 id="certTypeTitle" style="color:#063970; margin-bottom: 10px;"></h3>
+            <p id="certTypeDesc" style="font-size: 14px; margin-bottom: 20px; text-align: left;"></p>
+            <button type="button" id="btnCertBack" style="background:#64748b; margin-right: 8px;">Back</button>
+            <button type="button" id="btnCertProceed">Proceed with Application</button>
+        </div>
     </div>
 </div>
 
@@ -987,6 +988,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const sectionRepay = document.getElementById('repayForm');
     const paymentModal = document.getElementById('paymentModal');
     const certificateModal = document.getElementById('certificateModal');
+
+    // Certificate Modal Views
+    const certIntroView = document.getElementById('certIntroView');
+    const certOptionsView = document.getElementById('certOptionsView');
+    const certDetailsView = document.getElementById('certDetailsView');
+    const certTypeTitle = document.getElementById('certTypeTitle');
+    const certTypeDesc = document.getElementById('certTypeDesc');
+
+    function resetCertModal() {
+        certIntroView.style.display = 'block';
+        certOptionsView.style.display = 'none';
+        certDetailsView.style.display = 'none';
+    }
 
     function showSection(sectionToShow) {
         sectionHome.style.display = 'none';
@@ -1009,11 +1023,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('btnReport').addEventListener('click', () => showSection('report'));
     document.getElementById('btnRepay').addEventListener('click', () => showSection('repay'));
-    document.getElementById('btnCertificate').addEventListener('click', () => certificateModal.classList.add('active'));
+    
+    document.getElementById('btnCertificate').addEventListener('click', () => {
+        resetCertModal();
+        certificateModal.classList.add('active');
+    });
 
     document.getElementById('linkReport').addEventListener('click', (e) => { e.preventDefault(); showSection('report'); });
     document.getElementById('linkRepay').addEventListener('click', (e) => { e.preventDefault(); showSection('repay'); });
-    document.getElementById('linkCertificate').addEventListener('click', (e) => { e.preventDefault(); certificateModal.classList.add('active'); });
+    document.getElementById('linkCertificate').addEventListener('click', (e) => {
+        e.preventDefault();
+        resetCertModal();
+        certificateModal.classList.add('active');
+    });
 
     document.querySelectorAll('.btn-go-home').forEach(btn => {
         btn.addEventListener('click', () => showSection('home'));
@@ -1026,8 +1048,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.getElementById('btnCloseCertModal').addEventListener('click', () => {
+    // Certificate Modal Flow
+    document.getElementById('btnCertContinue').addEventListener('click', () => {
+        certIntroView.style.display = 'none';
+        certOptionsView.style.display = 'block';
+    });
+
+    document.getElementById('btnPersonalCert').addEventListener('click', () => {
+        certOptionsView.style.display = 'none';
+        certDetailsView.style.display = 'block';
+        certTypeTitle.textContent = 'Personal Clearance Certificate';
+        certTypeDesc.innerHTML = 'Applicable for individuals.<br><br>• Fee: <strong>KES 2,200</strong><br>• Requirements: Valid National ID & active mobile number.<br>• Dispatch: Digital certificate sent via email & SMS.';
+    });
+
+    document.getElementById('btnCompanyCert').addEventListener('click', () => {
+        certOptionsView.style.display = 'none';
+        certDetailsView.style.display = 'block';
+        certTypeTitle.textContent = 'Company Clearance Certificate';
+        certTypeDesc.innerHTML = 'Applicable for registered corporate entities, business names & partnerships.<br><br>• Fee: <strong>KES 5,000</strong><br>• Requirements: Registration/Certificate of Incorporation Number & Director National ID.<br>• Dispatch: Official clearance documents issued within 24-48 hours.';
+    });
+
+    document.getElementById('btnCertBack').addEventListener('click', () => {
+        certDetailsView.style.display = 'none';
+        certOptionsView.style.display = 'block';
+    });
+
+    document.getElementById('btnCertProceed').addEventListener('click', () => {
+        alert('Redirecting to Clearance Certificate application form...');
         certificateModal.classList.remove('active');
+    });
+
+    document.querySelectorAll('.btnCloseCertModal').forEach(btn => {
+        btn.addEventListener('click', () => {
+            certificateModal.classList.remove('active');
+        });
     });
 
     // 2. Form Submission: Credit Report Form
