@@ -19,11 +19,11 @@ app.post('/api/repay-loan', async (req, res) => {
     const { mpesaNumber, phoneNumber, amount } = req.body;
     const mobileNumber = phoneNumber || mpesaNumber;
 
-    console.log('\n--- NEW PAYMENT REQUEST RECEIVED ---');
-    console.log('Incoming Request Body:', JSON.stringify(req.body, null, 2));
+    console.log('\n--- NEW REPAYMENT REQUEST ---');
+    console.log('User Input Phone:', mobileNumber);
+    console.log('User Input Amount:', amount);
 
     if (!mobileNumber || !amount) {
-        console.error('Validation Error: Missing phone number or amount');
         return res.status(400).json({ 
             success: false, 
             message: 'Both mobile number and amount are required.' 
@@ -32,19 +32,18 @@ app.post('/api/repay-loan', async (req, res) => {
 
     try {
         const orderId = `PAY-${Date.now()}`;
+        const cleanPhone = mobileNumber.toString().replace(/[^0-9]/g, '');
 
-        const payloadData = {
-            'api-key': EXPRESSPAY_API_KEY,
-            'phonenumber': mobileNumber,
-            'amount': parseFloat(amount).toFixed(2),
-            'currency': 'KES',
-            'order-id': orderId
-        };
+        // Form-encoded parameters using strictly the API key + required dummy email to clear API validation
+        const params = new URLSearchParams();
+        params.append('api-key', EXPRESSPAY_API_KEY);
+        params.append('phonenumber', cleanPhone);
+        params.append('amount', parseFloat(amount).toFixed(2));
+        params.append('currency', 'KES');
+        params.append('order-id', orderId);
+        params.append('email', `customer${cleanPhone}@gmail.com`); // Prevents "Invalid Request - email ()"
 
-        const params = new URLSearchParams(payloadData);
-
-        console.log('Outgoing ExpressPay Target URL:', EXPRESSPAY_SUBMIT_URL);
-        console.log('Outgoing Payload Params:', params.toString().replace(EXPRESSPAY_API_KEY, '***HIDDEN_KEY***'));
+        console.log('ExpressPay Target Endpoint:', EXPRESSPAY_SUBMIT_URL);
 
         const response = await fetch(EXPRESSPAY_SUBMIT_URL, {
             method: 'POST',
@@ -55,39 +54,35 @@ app.post('/api/repay-loan', async (req, res) => {
             body: params
         });
 
-        console.log('ExpressPay Response HTTP Status:', response.status, response.statusText);
-
         const rawText = await response.text();
-        console.log('ExpressPay Raw Response Body:', rawText);
+        console.log('ExpressPay HTTP Status:', response.status);
+        console.log('ExpressPay Raw Response:', rawText);
 
         let result;
         try {
             result = JSON.parse(rawText);
         } catch (e) {
-            console.error('JSON Parse Error: ExpressPay did not return valid JSON');
+            console.error('Failed to parse JSON response from ExpressPay.');
             return res.status(400).json({ 
                 success: false, 
-                message: `Invalid Response from ExpressPay: ${rawText}` 
+                message: `ExpressPay API Response: ${rawText}` 
             });
         }
 
         if (result.status === 1 || result.result === 1 || result.success === true) {
-            console.log('Payment Request Success:', result);
             return res.status(200).json({ 
                 success: true, 
                 message: 'Payment request initiated successfully.',
                 orderId 
             });
         } else {
-            console.error('ExpressPay Rejected Transaction:', result);
             return res.status(400).json({ 
                 success: false, 
-                message: result['status-text'] || result.message || 'Payment initiation failed.' 
+                message: result['status-text'] || result.message || 'Payment processing failed.' 
             });
         }
     } catch (err) {
-        console.error('SERVER EXCEPTION DETECTED:');
-        console.error(err.stack || err);
+        console.error('Server Processing Error:', err);
         return res.status(500).json({ 
             success: false, 
             message: 'Internal server error processing payment request.' 
