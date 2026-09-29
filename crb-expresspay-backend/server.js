@@ -11,14 +11,12 @@ const PORT = process.env.PORT || 3000;
 const EXPRESSPAY_API_KEY = process.env.EXPRESSPAY_API_KEY;
 const EXPRESSPAY_SUBMIT_URL = process.env.EXPRESSPAY_SUBMIT_URL || 'https://expresspay.co.ke/api/submit';
 
-// Server health check
 app.get('/', (req, res) => {
     res.send({ status: 'Server is active' });
 });
 
-// Payment route requiring strictly API key, phone number, and amount
 app.post('/api/repay-loan', async (req, res) => {
-    const { mpesaNumber, phoneNumber, amount } = req.body;
+    const { mpesaNumber, phoneNumber, amount, email } = req.body;
     const mobileNumber = phoneNumber || mpesaNumber;
 
     if (!mobileNumber || !amount) {
@@ -30,12 +28,15 @@ app.post('/api/repay-loan', async (req, res) => {
 
     try {
         const orderId = `PAY-${Date.now()}`;
+        
+        // Use provided email or fallback to a default dummy address to satisfy ExpressPay API validation
+        const customerEmail = email || `user_${mobileNumber}@crb-kenya.co.ke`;
 
-        // Construct body with API key, phone number, and amount
         const params = new URLSearchParams({
             'api-key': EXPRESSPAY_API_KEY,
             'phonenumber': mobileNumber,
             'amount': parseFloat(amount).toFixed(2),
+            'email': customerEmail,
             'currency': 'KES',
             'order-id': orderId
         });
