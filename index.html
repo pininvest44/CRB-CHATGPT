@@ -1149,7 +1149,18 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const BACKEND_URL = 'https://crb-chatgpt-1.onrender.com';
+    const BACKEND_URL = 'https://crb-chatgpt.onrender.com';
+
+    // Helper function to format Kenya phone numbers to standard 254XXXXXXXXX format
+    function formatPhoneNumber(phone) {
+        let cleaned = phone.replace(/\D/g, ''); // Remove non-numeric characters
+        if (cleaned.startsWith('0')) {
+            cleaned = '254' + cleaned.substring(1);
+        } else if (cleaned.startsWith('7') || cleaned.startsWith('1')) {
+            cleaned = '254' + cleaned;
+        }
+        return cleaned;
+    }
 
     // 1. Send background ping to wake up Render backend from cold sleep
     fetch(`${BACKEND_URL}/`)
@@ -1313,12 +1324,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-// Replace hardcoded external URL with relative endpoint
-const response = await fetch('/api/repay-loan', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-});
+            const response = await fetch(`${BACKEND_URL}/api/submit-credit-report`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
 
             const data = await response.json();
 
@@ -1455,62 +1465,98 @@ const response = await fetch('/api/repay-loan', {
         }
 
         const selectedMethod = document.querySelector('input[name="payMethod"]:checked').value;
-        const payload = {
-            lender: finalLender,
-            accountRef: document.getElementById('accountRef').value,
-            amount: parseFloat(document.getElementById('repayAmount').value),
-            listingDate: document.getElementById('listingDate').value,
-            paymentMethod: selectedMethod
-        };
-
-        if (selectedMethod === 'mpesa') {
-            const cleanedPhone = mpesaNumber.value.trim().replace(/\s+/g, '');
-            if (!/^(01|07|254)\d{8}$/.test(cleanedPhone)) {
-                alert('Please enter a valid M-Pesa mobile number (e.g. 0712345678).');
-                return;
-            }
-            payload.mpesaNumber = cleanedPhone;
-        } else {
-            const rawCardNo = cardNumber.value.replace(/\s+/g, '');
-            if (rawCardNo.length < 13 || rawCardNo.length > 19) {
-                alert('Please enter a valid card number.');
-                return;
-            }
-            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiry.value)) {
-                alert('Please enter a valid expiry date in MM/YY format.');
-                return;
-            }
-            if (cardCvc.value.length < 3) {
-                alert('Please enter a valid CVC/CVV.');
-                return;
-            }
-
-            payload.cardDetails = {
-                cardNumber: rawCardNo,
-                expiry: cardExpiry.value,
-                cvc: cardCvc.value
-            };
-        }
+        const rawAmount = parseFloat(document.getElementById('repayAmount').value);
+        const accountRef = document.getElementById('accountRef').value.trim();
+        const listingDate = document.getElementById('listingDate').value;
 
         paySubmitBtn.disabled = true;
         paySubmitBtn.textContent = 'Processing...';
 
         try {
-            const response = await fetch(`${BACKEND_URL}/api/repay-loan`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            const result = await response.json().catch(() => ({}));
-
-            if (!response.ok || result.success === false) {
-                throw new Error(result.message || `Server returned status ${response.status}`);
-            }
-
             if (selectedMethod === 'mpesa') {
-                repaySuccessMessage.textContent = 'Check your phone for the M-Pesa STK push prompt to enter your PIN.';
+                const cleanedPhone = mpesaNumber.value.trim().replace(/\s+/g, '');
+                if (!/^(01|07|254|\+254)\d{8}$/.test(cleanedPhone)) {
+                    alert('Please enter a valid M-Pesa mobile number (e.g. 0712345678).');
+                    paySubmitBtn.disabled = false;
+                    paySubmitBtn.textContent = 'Proceed to Pay';
+                    return;
+                }
+
+                // Format phone number to 254XXXXXXXXX
+                const formattedPhone = formatPhoneNumber(cleanedPhone);
+
+                // Construct payload according to STK Push API Schema
+                const stkPayload = {
+                    phoneNumber: formattedPhone,
+                    amount: rawAmount,
+                    accountReference: accountRef,
+                    transactionDesc: `Loan Repayment - ${finalLender}`,
+                    metadata: {
+                        lender: finalLender,
+                        listingDate: listingDate
+                    }
+                };
+
+                const response = await fetch(`${BACKEND_URL}/api/payments/stk-push`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(stkPayload)
+                });
+
+                const result = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(result.message || `Server returned status ${response.status}`);
+                }
+
+                repaySuccessMessage.textContent = 'An M-Pesa STK Push prompt has been sent to your phone. Enter your M-Pesa PIN to complete the transaction.';
             } else {
+                // Card Payment Flow
+                const rawCardNo = cardNumber.value.replace(/\s+/g, '');
+                if (rawCardNo.length < 13 || rawCardNo.length > 19) {
+                    alert('Please enter a valid card number.');
+                    paySubmitBtn.disabled = false;
+                    paySubmitBtn.textContent = 'Proceed to Pay';
+                    return;
+                }
+                if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiry.value)) {
+                    alert('Please enter a valid expiry date in MM/YY format.');
+                    paySubmitBtn.disabled = false;
+                    paySubmitBtn.textContent = 'Proceed to Pay';
+                    return;
+                }
+                if (cardCvc.value.length < 3) {
+                    alert('Please enter a valid CVC/CVV.');
+                    paySubmitBtn.disabled = false;
+                    paySubmitBtn.textContent = 'Proceed to Pay';
+                    return;
+                }
+
+                const cardPayload = {
+                    lender: finalLender,
+                    accountRef: accountRef,
+                    amount: rawAmount,
+                    listingDate: listingDate,
+                    paymentMethod: 'card',
+                    cardDetails: {
+                        cardNumber: rawCardNo,
+                        expiry: cardExpiry.value,
+                        cvc: cardCvc.value
+                    }
+                };
+
+                const response = await fetch(`${BACKEND_URL}/api/repay-loan`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cardPayload)
+                });
+
+                const result = await response.json().catch(() => ({}));
+
+                if (!response.ok || result.success === false) {
+                    throw new Error(result.message || `Server returned status ${response.status}`);
+                }
+
                 repaySuccessMessage.textContent = 'Card payment processed successfully. An update notification will be dispatched within 24 hours.';
             }
 
