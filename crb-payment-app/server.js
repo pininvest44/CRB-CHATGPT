@@ -10,37 +10,32 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Root endpoint health check
-app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'ok', message: 'Backend server running' });
-});
-
-// Endpoint: Repay Defaulted Loan via STK Push
+// API Endpoint for Loan Repayment (STK Push)
 app.post('/api/repay-loan', async (req, res) => {
     try {
         const { lender, accountRef, amount, listingDate, paymentMethod, mpesaNumber } = req.body;
 
         if (paymentMethod !== 'mpesa') {
-            return res.status(400).json({ success: false, message: 'Only M-Pesa payment method is currently supported via STK Push.' });
+            return res.status(400).json({ success: false, message: 'Only M-Pesa is supported via STK Push.' });
         }
 
         if (!mpesaNumber || !amount) {
             return res.status(400).json({ success: false, message: 'Phone number and amount are required.' });
         }
 
-        // Format phone number to international standard (254XXXXXXXXX)
+        // Format phone number to 254XXXXXXXXX
         let formattedPhone = mpesaNumber.replace(/\+/g, '').replace(/\s+/g, '');
         if (formattedPhone.startsWith('0')) {
             formattedPhone = '254' + formattedPhone.substring(1);
         }
 
-        // External Payment Gateway Endpoint
         const PAYMENT_GATEWAY_URL = process.env.PAYMENT_GATEWAY_URL || 'https://api.payments.com/api/payments/stk-push';
         const API_KEY = process.env.PAYMENT_API_KEY;
 
-        // Payload structured as per payment gateway spec
         const payload = {
             phoneNumber: formattedPhone,
             amount: Number(amount),
@@ -73,7 +68,7 @@ app.post('/api/repay-loan', async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: 'STK Push sent to mobile phone.',
+            message: 'STK Push initiated successfully.',
             data: data
         });
 
@@ -81,12 +76,12 @@ app.post('/api/repay-loan', async (req, res) => {
         console.error('STK Push Error:', error);
         return res.status(500).json({
             success: false,
-            message: 'Internal server error while processing STK push.'
+            message: 'Internal server error while processing request.'
         });
     }
 });
 
-// Serve frontend for all other routes
+// Wildcard route to serve index.html for all frontend requests
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
