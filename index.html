@@ -1044,6 +1044,7 @@
                 <div class="checkbox-container">
                     <input type="checkbox" id="consentCheck" name="consentCheck" required>
                     <label for="consentCheck" style="font-weight: normal; margin-bottom: 0;">
+                        Consumer Consent<br>
                         By clicking the "I consent" button you agree that Creditinfo can access your information held on the Credit Reference Bureau in terms of the Credit Reference Bureau Regulations 2020.
                     </label>
                 </div>
@@ -1051,6 +1052,95 @@
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
                     <button type="button" id="btnPersonalCertFormBack" style="background:#64748b;">Back</button>
                     <button type="submit" id="btnSubmitPersonalCert">Submit Application</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Company Certificate Application Form View -->
+        <div id="companyCertFormView" style="display: none; text-align: left;">
+            <h3 style="color:#063970; margin-bottom: 15px; text-align: center;">Company Clearance Application Form</h3>
+            <form id="companyCertForm">
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input id="companyName" name="companyName" type="text" placeholder="e.g. Acme Corp Ltd" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="companyRegNumber">Company Registration Number</label>
+                    <input id="companyRegNumber" name="companyRegNumber" type="text" placeholder="e.g. CPR/2020/12345" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="directorFirstName">Director's First Name</label>
+                    <input id="directorFirstName" name="directorFirstName" type="text" placeholder="e.g. Jane" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="directorMiddleName">Director's Middle Name</label>
+                    <input id="directorMiddleName" name="directorMiddleName" type="text" placeholder="e.g. Wanjiku">
+                </div>
+
+                <div class="form-group">
+                    <label for="directorLastName">Director's Last Name</label>
+                    <input id="directorLastName" name="directorLastName" type="text" placeholder="e.g. Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="directorDocType">Director's Document type</label>
+                    <select id="directorDocType" name="directorDocType" required>
+                        <option value="" disabled selected>-- Select Document Type --</option>
+                        <option value="National ID">National ID</option>
+                        <option value="Alien ID">Alien ID</option>
+                        <option value="Passport Number">Passport Number</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="directorDocNumber">Director's Document Number</label>
+                    <input id="directorDocNumber" name="directorDocNumber" type="text" placeholder="Enter document number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="directorPhone">Director's Phone number</label>
+                    <input id="directorPhone" name="directorPhone" type="tel" placeholder="e.g. 0712345678" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="directorEmail">Director's Email</label>
+                    <input id="directorEmail" name="directorEmail" type="email" placeholder="e.g. director@company.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="companyRegCert">Upload Company Registration Certificate</label>
+                    <input id="companyRegCert" name="companyRegCert" type="file" accept="image/*,.pdf" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="companyPinCert">Upload Company PIN Certificate</label>
+                    <input id="companyPinCert" name="companyPinCert" type="file" accept="image/*,.pdf" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="companyCR12">Upload Company CR12</label>
+                    <input id="companyCR12" name="companyCR12" type="file" accept="image/*,.pdf" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="directorNationalId">Upload Director's National ID</label>
+                    <input id="directorNationalId" name="directorNationalId" type="file" accept="image/*,.pdf" required>
+                </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="companyConsentCheck" name="companyConsentCheck" required>
+                    <label for="companyConsentCheck" style="font-weight: normal; margin-bottom: 0;">
+                        Consumer Consent<br>
+                        By clicking the "I consent" button you agree that Creditinfo can access your information held on the Credit Reference Bureau in terms of the Credit Reference Bureau Regulations 2020.
+                    </label>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
+                    <button type="button" id="btnCompanyCertFormBack" style="background:#64748b;">Back</button>
+                    <button type="submit" id="btnSubmitCompanyCert">Submit Application</button>
                 </div>
             </form>
         </div>
@@ -1078,6 +1168,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const certOptionsView = document.getElementById('certOptionsView');
     const certDetailsView = document.getElementById('certDetailsView');
     const personalCertFormView = document.getElementById('personalCertFormView');
+    const companyCertFormView = document.getElementById('companyCertFormView');
     const certTypeTitle = document.getElementById('certTypeTitle');
     const certTypeDesc = document.getElementById('certTypeDesc');
 
@@ -1088,6 +1179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         certOptionsView.style.display = 'none';
         certDetailsView.style.display = 'none';
         personalCertFormView.style.display = 'none';
+        companyCertFormView.style.display = 'none';
         selectedCertType = '';
     }
 
@@ -1168,9 +1260,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedCertType === 'personal') {
             certDetailsView.style.display = 'none';
             personalCertFormView.style.display = 'block';
-        } else {
-            alert('Redirecting to Company Clearance Certificate application form...');
-            certificateModal.classList.remove('active');
+        } else if (selectedCertType === 'company') {
+            certDetailsView.style.display = 'none';
+            companyCertFormView.style.display = 'block';
         }
     });
 
@@ -1179,9 +1271,20 @@ document.addEventListener('DOMContentLoaded', () => {
         certDetailsView.style.display = 'block';
     });
 
+    document.getElementById('btnCompanyCertFormBack').addEventListener('click', () => {
+        companyCertFormView.style.display = 'none';
+        certDetailsView.style.display = 'block';
+    });
+
     document.getElementById('personalCertForm').addEventListener('submit', (e) => {
         e.preventDefault();
         alert('Your Personal Clearance Certificate application has been submitted successfully!');
+        certificateModal.classList.remove('active');
+    });
+
+    document.getElementById('companyCertForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Your Company Clearance Certificate application has been submitted successfully!');
         certificateModal.classList.remove('active');
     });
 
