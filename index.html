@@ -1313,11 +1313,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch(`${BACKEND_URL}/api/submit-credit-report`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
+// Replace hardcoded external URL with relative endpoint
+const response = await fetch('/api/repay-loan', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+});
 
             const data = await response.json();
 
