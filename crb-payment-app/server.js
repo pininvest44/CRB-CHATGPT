@@ -1,20 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fetch = require('node-fetch');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
-
-// Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// API Endpoint for Loan Repayment (STK Push)
 app.post('/api/repay-loan', async (req, res) => {
     try {
         const { lender, accountRef, amount, listingDate, paymentMethod, mpesaNumber } = req.body;
@@ -27,14 +22,21 @@ app.post('/api/repay-loan', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Phone number and amount are required.' });
         }
 
-        // Format phone number to 254XXXXXXXXX
         let formattedPhone = mpesaNumber.replace(/\+/g, '').replace(/\s+/g, '');
         if (formattedPhone.startsWith('0')) {
             formattedPhone = '254' + formattedPhone.substring(1);
         }
 
-        const PAYMENT_GATEWAY_URL = process.env.PAYMENT_GATEWAY_URL || 'https://api.payments.com/api/payments/stk-push';
+        const PAYMENT_GATEWAY_URL = process.env.PAYMENT_GATEWAY_URL;
         const API_KEY = process.env.PAYMENT_API_KEY;
+
+        if (!PAYMENT_GATEWAY_URL || !API_KEY) {
+            console.error('Missing environment variables: PAYMENT_GATEWAY_URL or PAYMENT_API_KEY');
+            return res.status(500).json({
+                success: false,
+                message: 'Server configuration error: Missing gateway credentials.'
+            });
+        }
 
         const payload = {
             phoneNumber: formattedPhone,
@@ -48,6 +50,7 @@ app.post('/api/repay-loan', async (req, res) => {
             }
         };
 
+        // Native fetch used here
         const response = await fetch(PAYMENT_GATEWAY_URL, {
             method: 'POST',
             headers: {
@@ -57,12 +60,23 @@ app.post('/api/repay-loan', async (req, res) => {
             body: JSON.stringify(payload)
         });
 
-        const data = await response.json();
+        const rawText = await response.text();
+        let data;
+        try {
+            data = JSON.parse(rawText);
+        } catch (e) {
+            console.error('Failed to parse gateway JSON response:', rawText);
+            return res.status(502).json({
+                success: false,
+                message: 'Invalid response format from payment gateway.'
+            });
+        }
 
         if (!response.ok) {
+            console.error('Gateway Error Response:', response.status, data);
             return res.status(response.status).json({
                 success: false,
-                message: data.message || 'Payment provider error.'
+                message: data.message || 'Payment provider declined request.'
             });
         }
 
@@ -73,15 +87,14 @@ app.post('/api/repay-loan', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('STK Push Error:', error);
+        console.error('STK Push System Catch Error:', error.message, error.stack);
         return res.status(500).json({
             success: false,
-            message: 'Internal server error while processing request.'
+            message: `Internal server error: ${error.message}`
         });
     }
 });
 
-// Wildcard route to serve index.html for all frontend requests
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
